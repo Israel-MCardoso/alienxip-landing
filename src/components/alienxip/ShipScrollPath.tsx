@@ -5,7 +5,7 @@ import {
   useReducedMotion,
   useTransform,
 } from "framer-motion";
-import shipImage from "../../assets/alienxip-ship-clean.png";
+import shipImage from "../../assets/alienxip-ship-clean.webp";
 
 type ShipScrollPathProps = {
   progress: MotionValue<number>;

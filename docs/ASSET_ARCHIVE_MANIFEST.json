@@ -1,0 +1,367 @@
+﻿[
+    {
+        "oldPath":  "src\\assets\\alienxip-liquid-glass-logo.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\alienxip-liquid-glass-logo.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\alienxip-ship-clean.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\alienxip-ship-clean.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\clube-atletico-boa-vontade-clean.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\clients\\clube-atletico-boa-vontade-clean.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\faculdade-da-cidade-clean.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\clients\\faculdade-da-cidade-clean.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\familia-mineira-clean.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\clients\\familia-mineira-clean.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\fides7-clean.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\clients\\fides7-clean.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\instituto-transformando-historia-clean.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\clients\\instituto-transformando-historia-clean.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\martronics-clean.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\clients\\martronics-clean.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\vision-car-clean.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\clients\\vision-car-clean.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\hero-video.mp4",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\hero-video.mp4",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\mission-003-notebook.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\mission-003-notebook.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\mission-003-screen.mp4",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\mission-003-screen.mp4",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\solutions\\card-1.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\solutions\\card-1.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\solutions\\card-2.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\solutions\\card-2.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\solutions\\card-3.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\solutions\\card-3.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\solutions\\card-4.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\solutions\\card-4.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\solutions\\card-5.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\solutions\\card-5.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  "src\\assets\\solutions\\card-6.png",
+        "newPath":  "_archive\\visual-references\\optimized-originals\\src\\assets\\solutions\\card-6.png",
+        "reason":  "Original replaced by optimized production asset"
+    },
+    {
+        "oldPath":  ".tmp-hero-check.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\.tmp-hero-check.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  ".tmp-video-contact.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\.tmp-video-contact.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\09816426-58a0-420b-b6b4-642495bcc26d.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\09816426-58a0-420b-b6b4-642495bcc26d.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\44bf8155-eb13-4140-8439-01f8fd7eeba5.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\44bf8155-eb13-4140-8439-01f8fd7eeba5.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\65f6d896-6ad1-4208-af7f-aeb119f58af8.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\65f6d896-6ad1-4208-af7f-aeb119f58af8.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\7cecdfe3-64ad-47db-a9cf-c091a1cde543.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\7cecdfe3-64ad-47db-a9cf-c091a1cde543.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\82581281-06ae-4129-aaa8-cc3b6150b454.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\82581281-06ae-4129-aaa8-cc3b6150b454.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\8b5da25c-cda2-4543-9a6b-ec845998a964.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\8b5da25c-cda2-4543-9a6b-ec845998a964.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\b4a4b9d1-a6fd-477f-9b99-b7e590822d8e.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\b4a4b9d1-a6fd-477f-9b99-b7e590822d8e.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\Clube Atlético Boa Vontade.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\Clube Atlético Boa Vontade.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\Familia Mineira.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\Familia Mineira.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\FCC.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\FCC.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\fides7.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\fides7.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\Instituto Transformando História.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\Instituto Transformando História.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\martronics.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\martronics.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "apoiadores\\visioncar.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\apoiadores\\visioncar.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "background alienxip.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\background alienxip.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "crateras-fundo.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\crateras-fundo.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "Fundo da Hero.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\Fundo da Hero.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "fundo missão 002.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\fundo missão 002.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "hero section.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\hero section.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "Nave Alienxip.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\Nave Alienxip.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "nave sem fundo virada para a esquerda.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\nave sem fundo virada para a esquerda.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "nave sem fundo.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\nave sem fundo.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "notebook pronto.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\notebook pronto.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "notebook quase pronto (1).png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\notebook quase pronto (1).png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "notebook quase pronto.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\notebook quase pronto.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "notebook.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\notebook.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "portal, ultima tela.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\portal, ultima tela.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "próxima tela, pós hero.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\próxima tela, pós hero.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "referencia.mp4",
+        "newPath":  "_archive\\visual-references\\root-and-support\\referencia.mp4",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "tela 2 com o hover aberto.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\tela 2 com o hover aberto.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "tela 3, missão 2.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\tela 3, missão 2.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "tela 4, missão 3.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\tela 4, missão 3.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "tela 5, missão 4.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\tela 5, missão 4.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "tela 6, missão 5.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\tela 6, missão 5.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "tela 7, Final.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\tela 7, Final.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "tela.png",
+        "newPath":  "_archive\\visual-references\\root-and-support\\tela.png",
+        "reason":  "Root/support visual reference outside current Vite production flow"
+    },
+    {
+        "oldPath":  "src\\assets\\alienxip-logo-mark-white.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\alienxip-logo-mark-white.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\alienxip-ship-isolated.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\alienxip-ship-isolated.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\background-alienxip.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\background-alienxip.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\clube-atletico-boa-vontade.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\clients\\clube-atletico-boa-vontade.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\faculdade-da-cidade.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\clients\\faculdade-da-cidade.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\familia-mineira.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\clients\\familia-mineira.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\fides7.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\clients\\fides7.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\instituto-transformando-historia.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\clients\\instituto-transformando-historia.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\martronics.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\clients\\martronics.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\clients\\vision-car.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\clients\\vision-car.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\craters_backup\\crater-01.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\craters_backup\\crater-01.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\craters_backup\\crater-02.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\craters_backup\\crater-02.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\craters_backup\\crater-03.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\craters_backup\\crater-03.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\craters_backup\\crater-04.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\craters_backup\\crater-04.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\craters_backup\\crater-05.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\craters_backup\\crater-05.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\hero-poster.webp",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\hero-poster.webp",
+        "reason":  "No active import/glob reference in current Vite flow"
+    },
+    {
+        "oldPath":  "src\\assets\\mission-002-reference.png",
+        "newPath":  "_archive\\visual-references\\unused-src-assets\\src\\assets\\mission-002-reference.png",
+        "reason":  "No active import/glob reference in current Vite flow"
+    }
+]

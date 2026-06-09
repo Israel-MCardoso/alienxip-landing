@@ -3,12 +3,12 @@ import { useRef } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 
 // Import local assets
-import card1 from "../../assets/solutions/card-1.png";
-import card2 from "../../assets/solutions/card-2.png";
-import card3 from "../../assets/solutions/card-3.png";
-import card4 from "../../assets/solutions/card-4.png";
-import card5 from "../../assets/solutions/card-5.png";
-import card6 from "../../assets/solutions/card-6.png";
+import card1 from "../../assets/solutions/card-1.webp";
+import card2 from "../../assets/solutions/card-2.webp";
+import card3 from "../../assets/solutions/card-3.webp";
+import card4 from "../../assets/solutions/card-4.webp";
+import card5 from "../../assets/solutions/card-5.webp";
+import card6 from "../../assets/solutions/card-6.webp";
 
 type SolutionSlide = {
   title: string;

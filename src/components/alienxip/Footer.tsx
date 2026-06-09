@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import { TextHoverEffect } from "../ui/TextHoverEffect";
-import logoImage from "../../assets/alienxip-liquid-glass-logo.png";
+import logoImage from "../../assets/alienxip-liquid-glass-logo.webp";
 
 interface FooterLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   text: string;
@@ -68,4 +68,3 @@ export function Footer() {
     </footer>
   );
 }
-

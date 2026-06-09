@@ -2,8 +2,7 @@ import { useRef } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import { motion } from "framer-motion";
 import { DeferredParticleGalaxy } from "../ui/DeferredParticleGalaxy";
-
-const portalImage = new URL("../../../portal, ultima tela.png", import.meta.url).href;
+import portalImage from "../../assets/portal-final.webp";
 
 const finalSignals = [
   "diagnóstico gratuito",

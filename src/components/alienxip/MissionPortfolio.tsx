@@ -2,12 +2,12 @@ import { useState, useRef } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import { CircularGallery, GalleryItem } from "../ui/CircularGallery";
 import { DeferredParticleGalaxy } from "../ui/DeferredParticleGalaxy";
-import clubeBoaVontadeLogo from "../../assets/clients/clube-atletico-boa-vontade-clean.png";
-import familiaMineiraLogo from "../../assets/clients/familia-mineira-clean.png";
-import faculdadeCidadeLogo from "../../assets/clients/faculdade-da-cidade-clean.png";
-import fidesLogo from "../../assets/clients/fides7-clean.png";
-import martronicsLogo from "../../assets/clients/martronics-clean.png";
-import missionNotebook from "../../assets/mission-003-notebook.png";
+import clubeBoaVontadeLogo from "../../assets/clients/clube-atletico-boa-vontade-clean.webp";
+import familiaMineiraLogo from "../../assets/clients/familia-mineira-clean.webp";
+import faculdadeCidadeLogo from "../../assets/clients/faculdade-da-cidade-clean.webp";
+import fidesLogo from "../../assets/clients/fides7-clean.webp";
+import martronicsLogo from "../../assets/clients/martronics-clean.webp";
+import missionNotebook from "../../assets/mission-003-notebook.webp";
 
 type PortfolioProject = GalleryItem & {
   operation: string;

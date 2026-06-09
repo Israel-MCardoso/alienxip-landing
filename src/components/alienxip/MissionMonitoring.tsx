@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ScrambleText } from "../ui/ScrambleText";
-import mission003Notebook from "../../assets/mission-003-notebook.png";
+import mission003Notebook from "../../assets/mission-003-notebook.webp";
 import mission003ScreenVideo from "../../assets/mission-003-screen.mp4";
 
 export function MissionMonitoring() {

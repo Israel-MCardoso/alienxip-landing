@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
-import liquidGlassLogo from "../../assets/alienxip-liquid-glass-logo.png";
+import liquidGlassLogo from "../../assets/alienxip-liquid-glass-logo.webp";
 import { HeroImageSequence } from "./HeroImageSequence";
 import { ScrollCue } from "./ScrollCue";
 

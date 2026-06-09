@@ -3,13 +3,13 @@ import { ScrambleText } from "../ui/ScrambleText";
 import { BorderBeam } from "../ui/border-beam";
 import placeholderVideo from "../../assets/hero-video.mp4";
 
-import clubeBoaVontadeLogo from "../../assets/clients/clube-atletico-boa-vontade-clean.png";
-import familiaMineiraLogo from "../../assets/clients/familia-mineira-clean.png";
-import faculdadeCidadeLogo from "../../assets/clients/faculdade-da-cidade-clean.png";
-import fides7Logo from "../../assets/clients/fides7-clean.png";
-import institutoTransformandoLogo from "../../assets/clients/instituto-transformando-historia-clean.png";
-import martronicsLogo from "../../assets/clients/martronics-clean.png";
-import visionCarLogo from "../../assets/clients/vision-car-clean.png";
+import clubeBoaVontadeLogo from "../../assets/clients/clube-atletico-boa-vontade-clean.webp";
+import familiaMineiraLogo from "../../assets/clients/familia-mineira-clean.webp";
+import faculdadeCidadeLogo from "../../assets/clients/faculdade-da-cidade-clean.webp";
+import fides7Logo from "../../assets/clients/fides7-clean.webp";
+import institutoTransformandoLogo from "../../assets/clients/instituto-transformando-historia-clean.webp";
+import martronicsLogo from "../../assets/clients/martronics-clean.webp";
+import visionCarLogo from "../../assets/clients/vision-car-clean.webp";
 
 type TestimonialSlide = {
   title: string;
