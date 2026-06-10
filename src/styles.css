@@ -1791,48 +1791,7 @@ a {
   transform: scale(1.08);
 }
 
-/* Video inside imgbox */
-.mission-carousel-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #000;
-  z-index: 10;
-}
 
-/* Play button overlay */
-.cs-box .play-btn {
-  position: absolute;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  border: 1px solid rgba(183, 100, 255, 0.4);
-  border-radius: 999px;
-  color: #ffffff;
-  background: rgba(11, 11, 13, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 0 15px rgba(183, 100, 255, 0.2);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-  cursor: pointer;
-}
-
-.cs-box .play-btn:hover {
-  transform: scale(1.08);
-  border-color: rgba(183, 100, 255, 0.85);
-  box-shadow: 0 0 25px rgba(183, 100, 255, 0.45);
-  background: rgba(183, 100, 255, 0.15);
-}
-
-.cs-box .play-btn svg {
-  fill: currentColor;
-  margin-left: 2px;
-}
 
 /* Tags overlay */
 .cs-box .tag-wrapper {
@@ -1857,53 +1816,7 @@ a {
   text-transform: uppercase;
 }
 
-/* Status and telemetry tags */
-.media-status-tag {
-  position: absolute;
-  z-index: 2;
-  left: 14px;
-  bottom: 14px;
-  color: rgba(183, 100, 255, 0.6);
-  font-family: "Share Tech Mono", monospace;
-  font-size: 8px;
-  letter-spacing: 0.15em;
-}
 
-.media-hud-rec-indicator {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  font-family: "Share Tech Mono", monospace;
-  font-size: 8px;
-  color: #ff5577;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  letter-spacing: 0.1em;
-  z-index: 2;
-}
-
-.media-hud-rec-indicator .dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #ff5577;
-  box-shadow: 0 0 6px #ff5577;
-}
-
-.media-hud-crosshair {
-  position: absolute;
-  color: rgba(183, 100, 255, 0.25);
-  font-family: monospace;
-  font-size: 10px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.media-hud-crosshair.top-left { top: 8px; left: 8px; }
-.media-hud-crosshair.top-right { top: 8px; right: 8px; }
-.media-hud-crosshair.bottom-left { bottom: 8px; left: 8px; }
-.media-hud-crosshair.bottom-right { bottom: 8px; right: 8px; }
 
 /* Metadata & Title styling */
 .cs-box .operation-meta {
@@ -2013,45 +1926,8 @@ a {
   letter-spacing: -0.01em;
 }
 
-/* Action button inside reveal */
-.cs-box .btn_ {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  background: rgba(157, 24, 255, 0.12);
-  border: 1px solid rgba(183, 100, 255, 0.3);
-  border-radius: 6px;
-  color: #ffffff;
-  font-family: "Orbitron", sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  width: fit-content;
-}
 
-.cs-box .btn_:hover {
-  background: rgba(157, 24, 255, 0.25);
-  border-color: #c783ff;
-  box-shadow: 0 0 15px rgba(183, 100, 255, 0.3);
-}
 
-.cs-box .btn_ span {
-  display: flex;
-  align-items: center;
-  margin-left: 8px;
-}
-
-.cs-box .btn_ svg {
-  transition: transform 0.3s ease;
-}
-
-.cs-box .btn_:hover svg {
-  transform: translate(3px, -3px);
-}
 
 /* Navigation controls & dot indicators */
 .mission-005-controls {
@@ -4339,14 +4215,8 @@ body[data-active-sector="005"] .trajectory-progress {
     flex-basis: min(85vw, 340px);
   }
 
-  /* Hide video player controls and indicators on mobile testimonials */
-  .cs-box .play-btn,
-  .media-status-tag,
-  .media-hud-rec-indicator,
-  .media-hud-crosshair,
-  .cs-box .bottom-inner .btn_.primary {
-    display: none !important;
-  }
+
+
 
   .ship-wrapper {
     right: -13vw;
