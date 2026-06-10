@@ -86,6 +86,7 @@ export function Starfield({
     y: number;
     z: number;
     colorRatio: number;
+    ratio: number;
     arr: Star[];
   }>({
     w: 0,
@@ -97,6 +98,7 @@ export function Starfield({
     y: 0,
     z: 0,
     colorRatio: 0,
+    ratio: 0,
     arr: [],
   });
 
@@ -108,7 +110,6 @@ export function Starfield({
       return undefined;
     }
 
-    const ratio = quantity / 2;
     const compSpeed = hyperspace ? speed * warpFactor : speed;
     const fill = hyperspace ? `rgba(0,0,0,${opacity})` : bgColor;
 
@@ -122,6 +123,8 @@ export function Starfield({
       data.y = Math.round(data.h / 2);
       data.z = (data.w + data.h) / 2;
       data.colorRatio = 1 / data.z;
+      // Dynamic projection ratio prevents stars from clustering in a small central square on widescreen desktop viewports.
+      data.ratio = data.z * 0.8;
 
       if (cursorRef.current.x === 0 || cursorRef.current.y === 0) {
         cursorRef.current.x = data.x;
@@ -192,8 +195,8 @@ export function Starfield({
           star.x = star.x * rw;
           star.y = star.y * rh;
           const zVal = Math.max(0.1, star.z);
-          star.px = data.x + (star.x / zVal) * ratio;
-          star.py = data.y + (star.y / zVal) * ratio;
+          star.px = data.x + (star.x / zVal) * data.ratio;
+          star.py = data.y + (star.y / zVal) * data.ratio;
         }
       }
 
@@ -248,8 +251,8 @@ export function Starfield({
 
         // Perspective projection with safe division
         const zVal = Math.max(0.1, star.z);
-        star.px = data.x + (star.x / zVal) * ratio;
-        star.py = data.y + (star.y / zVal) * ratio;
+        star.px = data.x + (star.x / zVal) * data.ratio;
+        star.py = data.y + (star.y / zVal) * data.ratio;
       }
     };
 
@@ -262,13 +265,17 @@ export function Starfield({
       }
 
       const dpr = window.devicePixelRatio || 1;
+      const physicalWidth = Math.round(data.w * dpr);
+      const physicalHeight = Math.round(data.h * dpr);
 
       ctx.save();
-      // Render in high resolution using Device Pixel Ratio
-      ctx.scale(dpr, dpr);
-
+      // Draw canvas fillRect using raw physical dimensions BEFORE scale transformation
+      // to avoid rounding rounding issues or sub-pixel flickering borders on scaled displays
       ctx.fillStyle = fill;
-      ctx.fillRect(0, 0, data.w, data.h);
+      ctx.fillRect(0, 0, physicalWidth, physicalHeight);
+
+      // Now apply context scale transform for drawing coordinates
+      ctx.scale(dpr, dpr);
       ctx.strokeStyle = starColor;
 
       for (let i = 0; i < data.arr.length; i++) {
@@ -377,8 +384,28 @@ export function Starfield({
   }, [bgColor, easing, hyperspace, mouseAdjust, opacity, quantity, speed, starColor, warpFactor]);
 
   return (
-    <div className={className} data-starfield-id={uidRef.current}>
-      <canvas ref={canvasRef} />
+    <div
+      className={className}
+      data-starfield-id={uidRef.current}
+      style={{
+        position: "absolute",
+        inset: 0,
+        overflow: "visible",
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          display: "block",
+          position: "sticky",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+        }}
+      />
     </div>
   );
 }

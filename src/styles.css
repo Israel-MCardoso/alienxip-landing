@@ -420,6 +420,7 @@ a {
   margin: 0;
   max-width: 790px;
   color: var(--text);
+  font-family: "Segoe UI Light", "SF Pro Display", Inter, sans-serif;
   font-size: clamp(48px, 4.45vw, 76px);
   line-height: 1.14;
   letter-spacing: -0.055em;
@@ -4233,7 +4234,7 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .scroll-cue {
-    bottom: 24px;
+    display: none !important;
   }
 
   .clients-marquee-section {
@@ -4812,6 +4813,27 @@ body[data-active-sector="005"] .trajectory-progress {
 
   .hero-subtitle {
     font-size: 14px;
+  }
+
+  /* Standardize all section headers on mobile to avoid overflows and poor wraps */
+  .mission-001-copy h2,
+  .mission-002-copy h2,
+  .mission-004-copy h2,
+  .mission-005-header h2,
+  .solutions-main-title,
+  .mission-portfolio-copy h2,
+  .mission-006-header h2,
+  .mission-007-copy h2 {
+    font-size: 30px !important;
+    line-height: 1.15 !important;
+  }
+
+  /* Adapt indicators separator lines on mobile to avoid overlapping at 320px */
+  .trajectory-progress-track {
+    width: clamp(40px, 15vw, 110px) !important;
+  }
+  .orbital-sector-indicator i {
+    width: clamp(40px, 15vw, 110px) !important;
   }
 }
 
