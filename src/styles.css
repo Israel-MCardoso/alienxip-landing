@@ -4236,14 +4236,11 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .hero-content {
-    width: calc(100% - 48px);
-    max-width: 480px;
-    margin: 0 auto;
-    padding-top: 150px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: min(100% - 48px, 520px);
+    margin: 0 24px;
+    padding-top: clamp(140px, 26vh, 220px);
+    text-align: left;
+    display: block;
   }
 
   .hero-label {
@@ -4257,21 +4254,21 @@ body[data-active-sector="005"] .trajectory-progress {
   .hero-content h1 {
     width: 100%;
     max-width: 100%;
-    font-size: clamp(22px, 7.5vw, 34px);
-    line-height: 1.15;
-    letter-spacing: -0.03em;
+    font-size: clamp(40px, 12.4vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -0.052em;
     overflow-wrap: break-word;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
   .hero-subtitle {
     width: 100%;
     max-width: 100%;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.5;
     overflow-wrap: break-word;
     margin-top: 0;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
   }
 
   .hero-subtitle br {
@@ -4286,7 +4283,7 @@ body[data-active-sector="005"] .trajectory-progress {
     align-items: stretch;
     gap: 12px;
     margin-top: 0;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
   }
 
   .button {
@@ -4301,11 +4298,11 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .hero-note {
-    width: 100%;
-    max-width: 310px;
-    margin: 0 auto;
-    font-size: 11px;
-    line-height: 1.4;
+    width: auto;
+    max-width: 360px;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
     color: rgba(244, 241, 234, 0.35);
   }
 
@@ -4536,6 +4533,10 @@ body[data-active-sector="005"] .trajectory-progress {
     overflow: hidden;
   }
 
+  .mission-002-background {
+    display: none !important;
+  }
+
   .mission-002-sticky {
     position: relative;
     height: auto;
@@ -4749,12 +4750,13 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .mission-007-cta {
-    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-columns: 44px minmax(0, 1fr);
     width: 100%;
-    min-height: 118px;
-    padding: 18px 22px;
-    font-size: 14px;
-    letter-spacing: 0.22em;
+    min-height: auto;
+    padding: 18px 16px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
   }
 
   .mission-007-cta > span:last-child {
@@ -4776,26 +4778,29 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .trajectory-progress {
-    left: 50%;
+    left: auto;
+    right: 16px;
     bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
+    transform: none;
     font-size: 8px;
-    letter-spacing: 0.48em;
-    justify-items: center;
+    letter-spacing: 0.28em;
+  }
+
+  .trajectory-progress-track {
+    width: 110px;
   }
 
   .orbital-sector-indicator {
-    left: 50%;
-    bottom: calc(62px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
+    left: 16px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    transform: none;
     font-size: 8px;
-    letter-spacing: 0.48em;
-    justify-items: center;
+    letter-spacing: 0.28em;
   }
 
   .orbital-sector-indicator i {
-    width: 150px;
-    background: linear-gradient(90deg, transparent, rgba(157, 24, 255, 0.98), rgba(206, 142, 255, 0.32), transparent);
+    width: 110px;
+    background: linear-gradient(90deg, rgba(157, 24, 255, 0.98), rgba(206, 142, 255, 0.32), rgba(244, 241, 234, 0.12), transparent);
   }
 
   /* ==========================================================================
@@ -5487,16 +5492,13 @@ body[data-active-sector="005"] .trajectory-progress {
     flex-direction: column;
     gap: 24px;
     align-items: center;
+    overflow: hidden;
   }
 
   .solutions-mobile-track {
     display: flex;
     width: 100%;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
+    overflow: visible;
   }
 
   .solutions-mobile-track::-webkit-scrollbar {
@@ -5506,7 +5508,6 @@ body[data-active-sector="005"] .trajectory-progress {
   .solutions-mobile-slide {
     flex: 0 0 100%;
     width: 100%;
-    scroll-snap-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
