@@ -266,6 +266,18 @@ export function MissionTestimonials() {
   // Helper to dynamically calculate alignment padding based on container size
   const getPaddingOffset = () => {
     const width = window.innerWidth;
+    if (width <= 780) {
+      const slider = sliderRef.current;
+      if (slider) {
+        const card = slider.querySelector(".mission-005-slide");
+        if (card) {
+          const cardWidth = card.getBoundingClientRect().width;
+          return (width - cardWidth) / 2;
+        }
+      }
+      const cardWidth = Math.min(width * 0.85, 340);
+      return (width - cardWidth) / 2;
+    }
     const padding = Math.max(24, (width - Math.min(1400, width - 80)) / 2 + 40);
     return padding;
   };

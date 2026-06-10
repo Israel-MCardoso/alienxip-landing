@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 
 // Import local assets
@@ -164,6 +164,8 @@ function CardHudBorder() {
 }
 
 export function MissionSolutions() {
+  const [activeMobileSlide, setActiveMobileSlide] = useState(0);
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -175,6 +177,24 @@ export function MissionSolutions() {
   
   // Transform scroll progress to translateX percentage of the horizontal track
   const x = useTransform(scrollProgress, [0, 1], ["0%", "-83.333%"]);
+
+  const handlePrev = () => {
+    const nextIndex = Math.max(0, activeMobileSlide - 1);
+    setActiveMobileSlide(nextIndex);
+    if (mobileTrackRef.current) {
+      const slideWidth = mobileTrackRef.current.getBoundingClientRect().width;
+      mobileTrackRef.current.scrollTo({ left: nextIndex * slideWidth, behavior: "smooth" });
+    }
+  };
+
+  const handleNext = () => {
+    const nextIndex = Math.min(solutionsSlides.length - 1, activeMobileSlide + 1);
+    setActiveMobileSlide(nextIndex);
+    if (mobileTrackRef.current) {
+      const slideWidth = mobileTrackRef.current.getBoundingClientRect().width;
+      mobileTrackRef.current.scrollTo({ left: nextIndex * slideWidth, behavior: "smooth" });
+    }
+  };
 
   return (
     <section
@@ -256,39 +276,103 @@ export function MissionSolutions() {
 
       {/* Mobile Layout fallback - stacked elements */}
       <div className="solutions-mobile-layout">
-        {solutionsSlides.map((slide, index) => (
-          <div key={slide.label} className="solutions-mobile-item">
-            <div className="solutions-card-number-tag">
-              [ <span className="number-val">00{index + 1}</span> ]
-            </div>
-            <div className="solutions-card-frame">
-              <CardHudBorder />
-              <div className="solutions-card-content-area">
-                <img
-                  src={slide.image}
-                  alt={slide.label}
-                  className="solutions-card-image"
-                  loading="lazy"
-                />
-                <div className="solutions-card-vignette" />
-                <div className="solutions-card-title-bottom">
-                  {slide.label}
+        <div className="solutions-mobile-carousel-container">
+          <div 
+            className="solutions-mobile-track" 
+            ref={mobileTrackRef}
+            onScroll={(e) => {
+              const container = e.currentTarget;
+              const slideWidth = container.getBoundingClientRect().width;
+              if (slideWidth > 0) {
+                const newIndex = Math.round(container.scrollLeft / slideWidth);
+                if (newIndex >= 0 && newIndex < solutionsSlides.length && newIndex !== activeMobileSlide) {
+                  setActiveMobileSlide(newIndex);
+                }
+              }
+            }}
+          >
+            {solutionsSlides.map((slide, index) => (
+              <div key={slide.label} className="solutions-mobile-slide">
+                <div className="solutions-card-number-tag">
+                  [ <span className="number-val">00{index + 1}</span> ]
+                </div>
+                <div className="solutions-card-frame">
+                  <CardHudBorder />
+                  <div className="solutions-card-content-area">
+                    <img
+                      src={slide.image}
+                      alt={slide.label}
+                      className="solutions-card-image"
+                      loading="lazy"
+                    />
+                    <div className="solutions-card-vignette" />
+                    <div className="solutions-card-title-bottom">
+                      {slide.label}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="solutions-description-content">
-              <SolutionTechIcon />
-              <h3 className="solutions-desc-title">
-                {slide.title} <br />
-                <span>{slide.spanTitle}</span>
-              </h3>
-              <p className="solutions-desc-text">
-                {slide.description}
-              </p>
-              <ExploreLink href="#diagnostico" label={slide.label} />
-            </div>
+            ))}
           </div>
-        ))}
+
+          {/* Navigation Controls */}
+          <div className="solutions-mobile-controls">
+            <button 
+              type="button" 
+              className="carousel-nav-btn prev"
+              onClick={handlePrev}
+              disabled={activeMobileSlide === 0}
+              aria-label="Solução anterior"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <div className="solutions-mobile-dots">
+              {solutionsSlides.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`dot-btn ${activeMobileSlide === i ? "is-active" : ""}`}
+                  onClick={() => {
+                    setActiveMobileSlide(i);
+                    if (mobileTrackRef.current) {
+                      const slideWidth = mobileTrackRef.current.getBoundingClientRect().width;
+                      mobileTrackRef.current.scrollTo({ left: i * slideWidth, behavior: "smooth" });
+                    }
+                  }}
+                  aria-label={`Ir para a solução ${i + 1}`}
+                />
+              ))}
+            </div>
+            <button 
+              type="button" 
+              className="carousel-nav-btn next"
+              onClick={handleNext}
+              disabled={activeMobileSlide === solutionsSlides.length - 1}
+              aria-label="Próxima solução"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Active Description Display */}
+        <div className="solutions-mobile-desc-wrap">
+          <div className="solutions-description-content">
+            <SolutionTechIcon />
+            <h3 className="solutions-desc-title">
+              {solutionsSlides[activeMobileSlide].title} <br />
+              <span>{solutionsSlides[activeMobileSlide].spanTitle}</span>
+            </h3>
+            <p className="solutions-desc-text">
+              {solutionsSlides[activeMobileSlide].description}
+            </p>
+            <ExploreLink href="#diagnostico" label={solutionsSlides[activeMobileSlide].label} />
+          </div>
+        </div>
       </div>
     </section>
   );

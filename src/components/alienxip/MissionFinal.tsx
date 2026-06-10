@@ -32,7 +32,7 @@ export function MissionFinal({ onStartDiagnostic, isPortalActivating = false }: 
       className="mission-007"
       id="diagnostico"
       aria-labelledby="mission-007-title"
-      data-orbital-sector="007"
+      data-orbital-sector="008"
     >
       <div className="mission-007-space" aria-hidden="true" />
       <DeferredParticleGalaxy
@@ -64,7 +64,7 @@ export function MissionFinal({ onStartDiagnostic, isPortalActivating = false }: 
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       >
-        <p className="mission-007-label">MISSÃO 007</p>
+        <p className="mission-007-label">MISSÃO 008</p>
         <h2 id="mission-007-title">
           <ScrambleText text="Sua operação está pronta" scrambleOnScroll />
           <br />

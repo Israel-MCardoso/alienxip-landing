@@ -69,7 +69,7 @@ export function MissionProtocols() {
       className="mission-006"
       id="sobre"
       aria-labelledby="mission-006-title"
-      data-orbital-sector="006"
+      data-orbital-sector="007"
     >
       <div className="mission-006-container">
         {/* Background Dot Grid for Section */}
@@ -82,7 +82,7 @@ export function MissionProtocols() {
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
         >
-          <p className="mission-006-label">MISSÃO 006</p>
+          <p className="mission-006-label">MISSÃO 007</p>
           <h2 id="mission-006-title">
             <ScrambleText text="Nem toda tecnologia" scrambleOnScroll />
             <br />
