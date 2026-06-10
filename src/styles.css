@@ -4777,21 +4777,25 @@ body[data-active-sector="005"] .trajectory-progress {
 
   .trajectory-progress {
     left: 50%;
-    bottom: 30px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     transform: translateX(-50%);
     font-size: 8px;
     letter-spacing: 0.48em;
+    justify-items: center;
   }
 
   .orbital-sector-indicator {
-    left: 24px;
-    bottom: 30px;
+    left: 50%;
+    bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
     font-size: 8px;
     letter-spacing: 0.48em;
+    justify-items: center;
   }
 
   .orbital-sector-indicator i {
     width: 150px;
+    background: linear-gradient(90deg, transparent, rgba(157, 24, 255, 0.98), rgba(206, 142, 255, 0.32), transparent);
   }
 
   /* ==========================================================================
