@@ -12,7 +12,7 @@ export function ScrollCue({ progress }: ScrollCueProps) {
     <motion.a
       className="scroll-cue"
       href="#missao-001"
-      style={{ opacity, y }}
+      style={{ opacity, y, x: "-50%" }}
       aria-label="Iniciar missão"
     >
       <motion.span

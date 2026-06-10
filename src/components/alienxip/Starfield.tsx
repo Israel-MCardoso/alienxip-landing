@@ -13,7 +13,16 @@ type StarfieldProps = {
   quantity?: number;
 };
 
-type StarData = [number, number, number, number, number, number, number, boolean];
+type Star = {
+  x: number;
+  y: number;
+  z: number;
+  px: number;
+  py: number;
+  ox: number;
+  oy: number;
+  active: boolean;
+};
 
 const createUuid = () => {
   const lut = Array.from({ length: 256 }, (_, i) => (i < 16 ? "0" : "") + i.toString(16));
@@ -65,6 +74,8 @@ export function Starfield({
   const hasPendingResizeRef = useRef(true);
   const mouseRef = useRef({ x: 0, y: 0 });
   const cursorRef = useRef({ x: 0, y: 0 });
+  const lastTimeRef = useRef<number>(0);
+
   const starRef = useRef<{
     w: number;
     h: number;
@@ -75,7 +86,8 @@ export function Starfield({
     y: number;
     z: number;
     colorRatio: number;
-    arr: StarData[];
+    ratio: number;
+    arr: Star[];
   }>({
     w: 0,
     h: 0,
@@ -86,6 +98,7 @@ export function Starfield({
     y: 0,
     z: 0,
     colorRatio: 0,
+    ratio: 0,
     arr: [],
   });
 
@@ -97,18 +110,21 @@ export function Starfield({
       return undefined;
     }
 
-    const ratio = quantity / 2;
     const compSpeed = hyperspace ? speed * warpFactor : speed;
     const fill = hyperspace ? `rgba(0,0,0,${opacity})` : bgColor;
 
     const measureViewport = () => {
       const data = starRef.current;
-      data.w = canvas.clientWidth || parent.clientWidth || window.innerWidth;
-      data.h = canvas.clientHeight || parent.clientHeight || window.innerHeight;
+      // Sticky canvas spans exactly window dimensions.
+      // Measuring clientWidth/clientHeight on parents causes vertical squishing in long scrolling pages.
+      data.w = window.innerWidth;
+      data.h = window.innerHeight;
       data.x = Math.round(data.w / 2);
       data.y = Math.round(data.h / 2);
       data.z = (data.w + data.h) / 2;
       data.colorRatio = 1 / data.z;
+      // Dynamic projection ratio prevents stars from clustering in a small central square on widescreen desktop viewports.
+      data.ratio = data.z * 0.8;
 
       if (cursorRef.current.x === 0 || cursorRef.current.y === 0) {
         cursorRef.current.x = data.x;
@@ -123,24 +139,25 @@ export function Starfield({
 
     const bigBang = () => {
       const data = starRef.current;
-      data.arr = Array.from({ length: quantity }, () => [
-        Math.random() * data.w * 2 - data.x * 2,
-        Math.random() * data.h * 2 - data.y * 2,
-        Math.round(Math.random() * data.z),
-        0,
-        0,
-        0,
-        0,
-        true,
-      ]);
+      data.arr = Array.from({ length: quantity }, () => ({
+        x: Math.random() * data.w * 2 - data.x * 2,
+        y: Math.random() * data.h * 2 - data.y * 2,
+        z: Math.round(Math.random() * data.z),
+        px: 0,
+        py: 0,
+        ox: 0,
+        oy: 0,
+        active: true,
+      }));
     };
 
     const setupCanvas = () => {
       measureViewport();
       const data = starRef.current;
       data.ctx = canvas.getContext("2d");
-      canvas.width = data.w;
-      canvas.height = data.h;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(data.w * dpr);
+      canvas.height = Math.round(data.h * dpr);
 
       if (data.ctx) {
         data.ctx.fillStyle = fill;
@@ -149,84 +166,94 @@ export function Starfield({
     };
 
     const resize = () => {
-      const data = starRef.current;
-      const oldStars = data.arr.map((star) => [...star] as StarData);
       measureViewport();
+      const data = starRef.current;
+      const dpr = window.devicePixelRatio || 1;
+
       data.cw = data.ctx?.canvas.width ?? 0;
       data.ch = data.ctx?.canvas.height ?? 0;
 
-      if (!data.ctx || (data.cw === data.w && data.ch === data.h)) {
+      const targetWidth = Math.round(data.w * dpr);
+      const targetHeight = Math.round(data.h * dpr);
+
+      if (!data.ctx || (data.cw === targetWidth && data.ch === targetHeight)) {
         return;
       }
 
-      const rw = data.cw ? data.w / data.cw : 1;
-      const rh = data.ch ? data.h / data.ch : 1;
+      const rw = data.cw ? targetWidth / data.cw : 1;
+      const rh = data.ch ? targetHeight / data.ch : 1;
 
-      data.ctx.canvas.width = data.w;
-      data.ctx.canvas.height = data.h;
+      data.ctx.canvas.width = targetWidth;
+      data.ctx.canvas.height = targetHeight;
 
-      if (!oldStars.length) {
+      if (!data.arr.length) {
         bigBang();
       } else {
-        data.arr = oldStars.map((star) => {
-          const next = [...star] as StarData;
-          next[0] = star[0] * rw;
-          next[1] = star[1] * rh;
-          next[3] = data.x + (next[0] / next[2]) * ratio;
-          next[4] = data.y + (next[1] / next[2]) * ratio;
-          return next;
-        });
+        // Adjust star coordinates based on resize ratios
+        for (let i = 0; i < data.arr.length; i++) {
+          const star = data.arr[i];
+          star.x = star.x * rw;
+          star.y = star.y * rh;
+          const zVal = Math.max(0.1, star.z);
+          star.px = data.x + (star.x / zVal) * data.ratio;
+          star.py = data.y + (star.y / zVal) * data.ratio;
+        }
       }
 
       data.ctx.fillStyle = fill;
       data.ctx.strokeStyle = starColor;
     };
 
-    const update = () => {
+    const update = (dt: number) => {
       const data = starRef.current;
-      mouseRef.current.x = mouseAdjust ? (cursorRef.current.x - data.x) / easing : 0;
-      mouseRef.current.y = mouseAdjust ? (cursorRef.current.y - data.y) / easing : 0;
+      const mx = mouseAdjust ? (cursorRef.current.x - data.x) / easing : 0;
+      const my = mouseAdjust ? (cursorRef.current.y - data.y) / easing : 0;
 
-      data.arr = data.arr.map((star) => {
-        const next = [...star] as StarData;
-        next[7] = true;
-        next[5] = next[3];
-        next[6] = next[4];
-        next[0] += mouseRef.current.x >> 4;
+      mouseRef.current.x = mx;
+      mouseRef.current.y = my;
 
-        if (next[0] > data.x << 1) {
-          next[0] -= data.w << 1;
-          next[7] = false;
-        }
-        if (next[0] < -data.x << 1) {
-          next[0] += data.w << 1;
-          next[7] = false;
-        }
+      const stepSpeed = compSpeed * dt;
+      const mouseStepX = (mouseRef.current.x >> 4) * dt;
+      const mouseStepY = (mouseRef.current.y >> 4) * dt;
 
-        next[1] += mouseRef.current.y >> 4;
-        if (next[1] > data.y << 1) {
-          next[1] -= data.h << 1;
-          next[7] = false;
-        }
-        if (next[1] < -data.y << 1) {
-          next[1] += data.h << 1;
-          next[7] = false;
+      for (let i = 0; i < data.arr.length; i++) {
+        const star = data.arr[i];
+        star.active = true;
+        star.ox = star.px;
+        star.oy = star.py;
+
+        star.x += mouseStepX;
+        if (star.x > data.x * 2) {
+          star.x -= data.w * 2;
+          star.active = false;
+        } else if (star.x < -data.x * 2) {
+          star.x += data.w * 2;
+          star.active = false;
         }
 
-        next[2] -= compSpeed;
-        if (next[2] > data.z) {
-          next[2] -= data.z;
-          next[7] = false;
-        }
-        if (next[2] < 0) {
-          next[2] += data.z;
-          next[7] = false;
+        star.y += mouseStepY;
+        if (star.y > data.y * 2) {
+          star.y -= data.h * 2;
+          star.active = false;
+        } else if (star.y < -data.y * 2) {
+          star.y += data.h * 2;
+          star.active = false;
         }
 
-        next[3] = data.x + (next[0] / next[2]) * ratio;
-        next[4] = data.y + (next[1] / next[2]) * ratio;
-        return next;
-      });
+        star.z -= stepSpeed;
+        if (star.z > data.z) {
+          star.z -= data.z;
+          star.active = false;
+        } else if (star.z <= 0) {
+          star.z = data.z;
+          star.active = false;
+        }
+
+        // Perspective projection with safe division
+        const zVal = Math.max(0.1, star.z);
+        star.px = data.x + (star.x / zVal) * data.ratio;
+        star.py = data.y + (star.y / zVal) * data.ratio;
+      }
     };
 
     const draw = () => {
@@ -237,29 +264,53 @@ export function Starfield({
         return;
       }
 
+      const dpr = window.devicePixelRatio || 1;
+      const physicalWidth = Math.round(data.w * dpr);
+      const physicalHeight = Math.round(data.h * dpr);
+
+      ctx.save();
+      // Draw canvas fillRect using raw physical dimensions BEFORE scale transformation
+      // to avoid rounding rounding issues or sub-pixel flickering borders on scaled displays
       ctx.fillStyle = fill;
-      ctx.fillRect(0, 0, data.w, data.h);
+      ctx.fillRect(0, 0, physicalWidth, physicalHeight);
+
+      // Now apply context scale transform for drawing coordinates
+      ctx.scale(dpr, dpr);
       ctx.strokeStyle = starColor;
 
-      data.arr.forEach((star) => {
-        if (star[5] > 0 && star[5] < data.w && star[6] > 0 && star[6] < data.h && star[7]) {
-          ctx.lineWidth = (1 - data.colorRatio * star[2]) * 2;
+      for (let i = 0; i < data.arr.length; i++) {
+        const star = data.arr[i];
+        if (
+          star.ox > 0 &&
+          star.ox < data.w &&
+          star.oy > 0 &&
+          star.oy < data.h &&
+          star.active
+        ) {
+          ctx.lineWidth = (1 - data.colorRatio * star.z) * 2;
           ctx.beginPath();
-          ctx.moveTo(star[5], star[6]);
-          ctx.lineTo(star[3], star[4]);
+          ctx.moveTo(star.ox, star.oy);
+          ctx.lineTo(star.px, star.py);
           ctx.stroke();
           ctx.closePath();
         }
-      });
+      }
+
+      ctx.restore();
     };
 
-    const animate = () => {
+    const animate = (time: number) => {
       if (hasPendingResizeRef.current) {
         resize();
         hasPendingResizeRef.current = false;
       }
 
-      update();
+      // Delta time based on 60fps target (16.67ms)
+      const elapsed = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+      const dt = Math.max(0.1, Math.min(8, elapsed / 16.67));
+
+      update(dt);
       draw();
 
       if (isActiveRef.current) {
@@ -273,6 +324,7 @@ export function Starfield({
       }
 
       isActiveRef.current = true;
+      lastTimeRef.current = performance.now();
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
@@ -332,8 +384,28 @@ export function Starfield({
   }, [bgColor, easing, hyperspace, mouseAdjust, opacity, quantity, speed, starColor, warpFactor]);
 
   return (
-    <div className={className} data-starfield-id={uidRef.current}>
-      <canvas ref={canvasRef} />
+    <div
+      className={className}
+      data-starfield-id={uidRef.current}
+      style={{
+        position: "absolute",
+        inset: 0,
+        overflow: "visible",
+        pointerEvents: "none",
+        zIndex: 0,
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          display: "block",
+          position: "sticky",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+        }}
+      />
     </div>
   );
 }
