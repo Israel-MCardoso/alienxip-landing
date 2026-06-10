@@ -18,7 +18,7 @@ function FooterLink({ text, href, className, ...props }: FooterLinkProps) {
 
 export function Footer() {
   return (
-    <footer className="alienxip-footer">
+    <footer className="alienxip-footer" id="contato">
       <div className="alienxip-footer-effect-wrap">
         <TextHoverEffect text="ALIENXIP" />
       </div>
@@ -36,7 +36,7 @@ export function Footer() {
             <h4>Navegação</h4>
             <ul>
               <li><FooterLink href="#top" text="Início" /></li>
-              <li><FooterLink href="#missao-006" text="Missões" /></li>
+              <li><FooterLink href="#sobre" text="Sobre" /></li>
               <li><FooterLink href="#diagnostico" text="Diagnóstico" /></li>
             </ul>
           </div>

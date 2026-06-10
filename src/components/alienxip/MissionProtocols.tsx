@@ -67,7 +67,7 @@ export function MissionProtocols() {
   return (
     <section
       className="mission-006"
-      id="missao-006"
+      id="sobre"
       aria-labelledby="mission-006-title"
       data-orbital-sector="006"
     >
