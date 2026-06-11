@@ -33,7 +33,7 @@ export function DeferredParticleGalaxy(props: ParticleGalaxyProps) {
           observer.disconnect();
         }
       },
-      { rootMargin: "7000px 0px" },
+      { rootMargin: "1200px 0px" },
     );
 
     observer.observe(container);

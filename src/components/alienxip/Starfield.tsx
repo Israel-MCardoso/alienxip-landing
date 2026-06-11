@@ -24,6 +24,8 @@ type Star = {
   active: boolean;
 };
 
+const getCanvasPixelRatio = () => Math.min(window.devicePixelRatio || 1, window.innerWidth <= 768 ? 1.5 : 2);
+
 const createUuid = () => {
   const lut = Array.from({ length: 256 }, (_, i) => (i < 16 ? "0" : "") + i.toString(16));
   const d0 = (Math.random() * 0xffffffff) | 0;
@@ -155,7 +157,7 @@ export function Starfield({
       measureViewport();
       const data = starRef.current;
       data.ctx = canvas.getContext("2d");
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = getCanvasPixelRatio();
       canvas.width = Math.round(data.w * dpr);
       canvas.height = Math.round(data.h * dpr);
 
@@ -168,7 +170,7 @@ export function Starfield({
     const resize = () => {
       measureViewport();
       const data = starRef.current;
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = getCanvasPixelRatio();
 
       data.cw = data.ctx?.canvas.width ?? 0;
       data.ch = data.ctx?.canvas.height ?? 0;
@@ -264,7 +266,7 @@ export function Starfield({
         return;
       }
 
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = getCanvasPixelRatio();
       const physicalWidth = Math.round(data.w * dpr);
       const physicalHeight = Math.round(data.h * dpr);
 

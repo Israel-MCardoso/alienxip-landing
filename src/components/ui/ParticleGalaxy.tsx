@@ -85,7 +85,13 @@ export function ParticleGalaxy({
     const container = containerRef.current;
     const updateDimensions = () => {
       const rect = container.getBoundingClientRect();
-      setDimensions({ width: rect.width, height: rect.height });
+      setDimensions((current) => {
+        if (current.width === rect.width && current.height === rect.height) {
+          return current;
+        }
+
+        return { width: rect.width, height: rect.height };
+      });
     };
 
     updateDimensions();
@@ -114,10 +120,10 @@ export function ParticleGalaxy({
         canvas,
         alpha: true,
         antialias: true,
-        preserveDrawingBuffer: true,
+        preserveDrawingBuffer: false,
       });
       renderer.setSize(dimensions.width, dimensions.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       rendererRef.current = renderer;
 
       const geometry = new THREE.BufferGeometry();
