@@ -10,6 +10,8 @@ type ScrollRange = {
 export function TrajectoryProgress() {
   const progressValue = useMotionValue(0);
   const rangeRef = useRef<ScrollRange>({ reveal: 0, start: 0, end: 1 });
+  const isVisibleRef = useRef(false);
+  const rafRef = useRef<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -29,9 +31,24 @@ export function TrajectoryProgress() {
       const range = rangeRef.current;
       const scrollY = window.scrollY;
       const nextProgress = Math.min(1, Math.max(0, (scrollY - range.start) / (range.end - range.start || 1)));
+      const nextIsVisible = scrollY >= range.reveal;
 
       progressValue.set(nextProgress);
-      setIsVisible(scrollY >= range.reveal);
+      if (nextIsVisible !== isVisibleRef.current) {
+        isVisibleRef.current = nextIsVisible;
+        setIsVisible(nextIsVisible);
+      }
+    };
+
+    const scheduleScrollUpdate = () => {
+      if (rafRef.current !== null) {
+        return;
+      }
+
+      rafRef.current = window.requestAnimationFrame(() => {
+        rafRef.current = null;
+        updateScroll();
+      });
     };
 
     const handleUpdate = () => {
@@ -42,13 +59,16 @@ export function TrajectoryProgress() {
     handleUpdate();
     const resizeObserver = new ResizeObserver(handleUpdate);
     resizeObserver.observe(document.documentElement);
-    window.addEventListener("scroll", updateScroll, { passive: true });
-    window.addEventListener("resize", handleUpdate);
+    window.addEventListener("scroll", scheduleScrollUpdate, { passive: true });
+    window.addEventListener("resize", handleUpdate, { passive: true });
     window.addEventListener("load", handleUpdate);
 
     return () => {
+      if (rafRef.current !== null) {
+        window.cancelAnimationFrame(rafRef.current);
+      }
       resizeObserver.disconnect();
-      window.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("scroll", scheduleScrollUpdate);
       window.removeEventListener("resize", handleUpdate);
       window.removeEventListener("load", handleUpdate);
     };
