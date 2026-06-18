@@ -28,7 +28,7 @@ test("landing renders the critical conversion flow", async ({ page }, testInfo) 
   if (testInfo.project.name.includes("mobile")) {
     await finalCta.tap();
   } else {
-    await finalCta.dispatchEvent("click");
+    await finalCta.click();
   }
   await expect(page.locator(".diagnostic-overlay")).toBeVisible({ timeout: 15_000 });
 

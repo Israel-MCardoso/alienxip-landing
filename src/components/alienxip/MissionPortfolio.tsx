@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import { CircularGallery, GalleryItem } from "../ui/CircularGallery";
 import { DeferredParticleGalaxy } from "../ui/DeferredParticleGalaxy";
@@ -112,6 +112,26 @@ function PortfolioProjectButton({ project, isActive, onClick }: PortfolioProject
 export function MissionPortfolio() {
   const [activeIndex, setActiveIndex] = useState(2);
   const [activeSignal, setActiveSignal] = useState(0);
+  const [radius, setRadius] = useState(360);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width <= 480) {
+        setRadius(130);
+      } else if (width <= 768) {
+        setRadius(160);
+      } else if (width <= 1024) {
+        setRadius(240);
+      } else {
+        setRadius(360);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const selectProject = (index: number) => {
     setActiveIndex(index);
     setActiveSignal((current) => current + 1);
@@ -120,9 +140,9 @@ export function MissionPortfolio() {
   return (
     <section
       className="mission-portfolio"
-      id="missao-portfolio"
+      id="cases"
       aria-labelledby="mission-portfolio-title"
-      data-orbital-sector="005"
+      data-orbital-sector="006"
     >
       <DeferredParticleGalaxy
         className="mission-portfolio-galaxy"
@@ -143,7 +163,7 @@ export function MissionPortfolio() {
         enableTouch={false}
       />
       <div className="mission-portfolio-copy">
-        <p className="mission-portfolio-label">MISSÃO 005</p>
+        <p className="mission-portfolio-label">MISSÃO 006</p>
         <h2 id="mission-portfolio-title">
           <ScrambleText text="Algumas operações" scrambleOnScroll />
           <br />
@@ -171,7 +191,7 @@ export function MissionPortfolio() {
           activeIndex={activeIndex}
           onActiveIndexChange={setActiveIndex}
           activeSignal={activeSignal}
-          radius={360}
+          radius={radius}
         />
       </div>
 

@@ -1,10 +1,18 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+type SectorStop = {
+  top: number;
+  sector: string;
+};
 
 export function OrbitalSectorIndicator() {
   const { scrollY } = useScroll();
   const [sector, setSector] = useState("001");
   const [heroEnd, setHeroEnd] = useState(0);
+  const sectorRef = useRef("001");
+  const sectorStopsRef = useRef<SectorStop[]>([]);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const getDocumentTop = (element: HTMLElement) => element.getBoundingClientRect().top + window.scrollY;
@@ -14,29 +22,55 @@ export function OrbitalSectorIndicator() {
       setHeroEnd(hero ? getDocumentTop(hero) + hero.offsetHeight : window.innerHeight);
     };
 
-    const updateSector = () => {
+    const updateSectorStops = () => {
       const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-orbital-sector]"));
-      const viewportAnchor = window.scrollY + window.innerHeight * 0.48;
-      const active = sections.reduce<HTMLElement | null>((current, section) => {
-        if (getDocumentTop(section) <= viewportAnchor) return section;
-        return current;
-      }, sections[0] ?? null);
+      sectorStopsRef.current = sections.map((section) => ({
+        top: getDocumentTop(section),
+        sector: section.dataset.orbitalSector ?? "001",
+      }));
+    };
 
-      setSector(active?.dataset.orbitalSector ?? "001");
+    const updateSector = () => {
+      const viewportAnchor = window.scrollY + window.innerHeight * 0.48;
+      const active = sectorStopsRef.current.reduce<SectorStop | null>((current, section) => {
+        if (section.top <= viewportAnchor) return section;
+        return current;
+      }, sectorStopsRef.current[0] ?? null);
+      const nextSector = active?.sector ?? "001";
+
+      if (nextSector !== sectorRef.current) {
+        sectorRef.current = nextSector;
+        setSector(nextSector);
+      }
+    };
+
+    const scheduleSectorUpdate = () => {
+      if (rafRef.current !== null) {
+        return;
+      }
+
+      rafRef.current = window.requestAnimationFrame(() => {
+        rafRef.current = null;
+        updateSector();
+      });
     };
 
     const handleUpdate = () => {
+      updateSectorStops();
       updateHeroEnd();
       updateSector();
     };
 
     handleUpdate();
-    window.addEventListener("scroll", updateSector, { passive: true });
-    window.addEventListener("resize", handleUpdate);
+    window.addEventListener("scroll", scheduleSectorUpdate, { passive: true });
+    window.addEventListener("resize", handleUpdate, { passive: true });
     window.addEventListener("load", handleUpdate);
 
     return () => {
-      window.removeEventListener("scroll", updateSector);
+      if (rafRef.current !== null) {
+        window.cancelAnimationFrame(rafRef.current);
+      }
+      window.removeEventListener("scroll", scheduleSectorUpdate);
       window.removeEventListener("resize", handleUpdate);
       window.removeEventListener("load", handleUpdate);
     };

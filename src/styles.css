@@ -420,6 +420,7 @@ a {
   margin: 0;
   max-width: 790px;
   color: var(--text);
+  font-family: "Segoe UI Light", "SF Pro Display", Inter, sans-serif;
   font-size: clamp(48px, 4.45vw, 76px);
   line-height: 1.14;
   letter-spacing: -0.055em;
@@ -1791,48 +1792,7 @@ a {
   transform: scale(1.08);
 }
 
-/* Video inside imgbox */
-.mission-carousel-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #000;
-  z-index: 10;
-}
 
-/* Play button overlay */
-.cs-box .play-btn {
-  position: absolute;
-  z-index: 3;
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  border: 1px solid rgba(183, 100, 255, 0.4);
-  border-radius: 999px;
-  color: #ffffff;
-  background: rgba(11, 11, 13, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 0 15px rgba(183, 100, 255, 0.2);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
-  cursor: pointer;
-}
-
-.cs-box .play-btn:hover {
-  transform: scale(1.08);
-  border-color: rgba(183, 100, 255, 0.85);
-  box-shadow: 0 0 25px rgba(183, 100, 255, 0.45);
-  background: rgba(183, 100, 255, 0.15);
-}
-
-.cs-box .play-btn svg {
-  fill: currentColor;
-  margin-left: 2px;
-}
 
 /* Tags overlay */
 .cs-box .tag-wrapper {
@@ -1857,53 +1817,7 @@ a {
   text-transform: uppercase;
 }
 
-/* Status and telemetry tags */
-.media-status-tag {
-  position: absolute;
-  z-index: 2;
-  left: 14px;
-  bottom: 14px;
-  color: rgba(183, 100, 255, 0.6);
-  font-family: "Share Tech Mono", monospace;
-  font-size: 8px;
-  letter-spacing: 0.15em;
-}
 
-.media-hud-rec-indicator {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  font-family: "Share Tech Mono", monospace;
-  font-size: 8px;
-  color: #ff5577;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  letter-spacing: 0.1em;
-  z-index: 2;
-}
-
-.media-hud-rec-indicator .dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #ff5577;
-  box-shadow: 0 0 6px #ff5577;
-}
-
-.media-hud-crosshair {
-  position: absolute;
-  color: rgba(183, 100, 255, 0.25);
-  font-family: monospace;
-  font-size: 10px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.media-hud-crosshair.top-left { top: 8px; left: 8px; }
-.media-hud-crosshair.top-right { top: 8px; right: 8px; }
-.media-hud-crosshair.bottom-left { bottom: 8px; left: 8px; }
-.media-hud-crosshair.bottom-right { bottom: 8px; right: 8px; }
 
 /* Metadata & Title styling */
 .cs-box .operation-meta {
@@ -2013,45 +1927,8 @@ a {
   letter-spacing: -0.01em;
 }
 
-/* Action button inside reveal */
-.cs-box .btn_ {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  background: rgba(157, 24, 255, 0.12);
-  border: 1px solid rgba(183, 100, 255, 0.3);
-  border-radius: 6px;
-  color: #ffffff;
-  font-family: "Orbitron", sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  width: fit-content;
-}
 
-.cs-box .btn_:hover {
-  background: rgba(157, 24, 255, 0.25);
-  border-color: #c783ff;
-  box-shadow: 0 0 15px rgba(183, 100, 255, 0.3);
-}
 
-.cs-box .btn_ span {
-  display: flex;
-  align-items: center;
-  margin-left: 8px;
-}
-
-.cs-box .btn_ svg {
-  transition: transform 0.3s ease;
-}
-
-.cs-box .btn_:hover svg {
-  transform: translate(3px, -3px);
-}
 
 /* Navigation controls & dot indicators */
 .mission-005-controls {
@@ -2692,10 +2569,10 @@ a {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: clamp(190px, 14.8vw, 260px);
-  height: clamp(266px, 20.6vw, 360px);
-  margin-left: calc(clamp(190px, 14.8vw, 260px) / -2);
-  margin-top: calc(clamp(266px, 20.6vw, 360px) / -2);
+  width: var(--gallery-item-w, clamp(190px, 14.8vw, 260px));
+  height: var(--gallery-item-h, clamp(266px, 20.6vw, 360px));
+  margin-left: calc(var(--gallery-item-w, clamp(190px, 14.8vw, 260px)) / -2);
+  margin-top: calc(var(--gallery-item-h, clamp(266px, 20.6vw, 360px)) / -2);
   transition: opacity 300ms linear;
   will-change: transform, opacity;
 }
@@ -4157,10 +4034,71 @@ body[data-active-sector="005"] .trajectory-progress {
   .brand {
     font-size: 12px;
     letter-spacing: 0.32em;
+    position: relative;
+    z-index: 999;
+  }
+
+  .menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 26px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 999;
+  }
+
+  .menu-toggle-bar {
+    width: 100%;
+    height: 2px;
+    background-color: rgba(244, 241, 234, 0.9);
+    transition: transform 300ms ease, opacity 300ms ease;
+  }
+
+  .menu-toggle.is-open .menu-toggle-bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .menu-toggle.is-open .menu-toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle.is-open .menu-toggle-bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
   }
 
   .nav-links {
     display: none;
+  }
+
+  .nav-links.is-active {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(5, 5, 7, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    z-index: 998;
+    padding-top: 80px;
+  }
+
+  .nav-links.is-active a {
+    font-family: "Orbitron", sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    color: rgba(244, 241, 234, 0.85);
+    text-transform: uppercase;
   }
 
   .hero-watermark-cover {
@@ -4177,7 +4115,9 @@ body[data-active-sector="005"] .trajectory-progress {
   .hero-content {
     width: min(100% - 48px, 520px);
     margin: 0 24px;
-    padding-top: 150px;
+    padding-top: clamp(140px, 26vh, 220px);
+    text-align: left;
+    display: block;
   }
 
   .hero-label {
@@ -4185,20 +4125,27 @@ body[data-active-sector="005"] .trajectory-progress {
     white-space: normal;
     font-size: 9px;
     letter-spacing: 0.31em;
+    margin-bottom: 16px;
   }
 
   .hero-content h1 {
+    width: 100%;
     max-width: 100%;
     font-size: clamp(40px, 12.4vw, 58px);
     line-height: 1.05;
     letter-spacing: -0.052em;
     overflow-wrap: break-word;
+    margin-bottom: 24px;
   }
 
   .hero-subtitle {
+    width: 100%;
     max-width: 100%;
     font-size: 15px;
+    line-height: 1.5;
     overflow-wrap: break-word;
+    margin-top: 0;
+    margin-bottom: 32px;
   }
 
   .hero-subtitle br {
@@ -4206,21 +4153,42 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .hero-actions {
-    align-items: stretch;
+    width: 100%;
+    max-width: 320px;
+    display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin-top: 34px;
-    max-width: 100%;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 0;
+    margin-bottom: 32px;
   }
 
   .button {
     width: 100%;
-    min-height: 52px;
+    min-height: 48px;
+    min-width: 0 !important;
+    font-size: 14px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .hero-note {
-    max-width: 100%;
-    margin-top: 24px;
+    width: auto;
+    max-width: 360px;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: rgba(244, 241, 234, 0.35);
+  }
+
+  .hero-note::before {
+    display: none !important;
+  }
+
+  .hero-note br {
+    display: none;
   }
 
   .mission-005 {
@@ -4248,6 +4216,9 @@ body[data-active-sector="005"] .trajectory-progress {
     flex-basis: min(85vw, 340px);
   }
 
+
+
+
   .ship-wrapper {
     right: -13vw;
     top: 61vh;
@@ -4263,7 +4234,7 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .scroll-cue {
-    bottom: 24px;
+    display: none !important;
   }
 
   .clients-marquee-section {
@@ -4295,6 +4266,7 @@ body[data-active-sector="005"] .trajectory-progress {
 
   .mission-001 {
     min-height: 120vh;
+    overflow: hidden;
   }
 
   .mission-001-content {
@@ -4429,6 +4401,11 @@ body[data-active-sector="005"] .trajectory-progress {
   .mission-002 {
     min-height: 0;
     padding-bottom: 118px;
+    overflow: hidden;
+  }
+
+  .mission-002-background {
+    display: none !important;
   }
 
   .mission-002-sticky {
@@ -4489,14 +4466,15 @@ body[data-active-sector="005"] .trajectory-progress {
   .mission-002-flow {
     width: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 24px;
-    margin-top: 58px;
-    padding: 56px 24px 18px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    margin-top: 48px;
+    padding: 0 24px;
+    overflow-x: visible;
+    scroll-snap-type: none;
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 
   .mission-002-flow::-webkit-scrollbar {
@@ -4504,29 +4482,33 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .mission-002-flow-line {
-    left: 42px;
-    right: auto;
-    top: 104px;
-    width: 920px;
+    display: none !important;
+  }
+
+  .mission-002-timeline-node {
+    display: none !important;
   }
 
   .mission-002-step-container {
-    flex: 0 0 180px;
-    scroll-snap-align: center;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 320px;
+    scroll-snap-align: none;
   }
 
   .mission-002-card {
-    padding: 18px;
-    min-height: 220px;
+    width: 100%;
+    padding: 20px;
+    min-height: auto;
   }
 
   .card-header h3 {
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 0.08em;
   }
 
   .card-items li {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .mission-002-exit-cue {
@@ -4535,6 +4517,7 @@ body[data-active-sector="005"] .trajectory-progress {
 
   .mission-004 {
     min-height: 112vh;
+    overflow: hidden;
   }
 
   .mission-004-copy {
@@ -4578,6 +4561,7 @@ body[data-active-sector="005"] .trajectory-progress {
     flex-direction: column;
     align-items: center;
     padding: 92px 22px 58px;
+    overflow: hidden;
   }
 
   .mission-007-copy {
@@ -4628,6 +4612,7 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .mission-007-console {
+    align-self: center;
     width: 100%;
     max-width: 346px;
     gap: 22px;
@@ -4636,12 +4621,13 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .mission-007-cta {
-    grid-template-columns: 56px minmax(0, 1fr);
+    grid-template-columns: 44px minmax(0, 1fr);
     width: 100%;
-    min-height: 118px;
-    padding: 18px 22px;
-    font-size: 14px;
-    letter-spacing: 0.22em;
+    min-height: auto;
+    padding: 18px 16px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
   }
 
   .mission-007-cta > span:last-child {
@@ -4663,22 +4649,159 @@ body[data-active-sector="005"] .trajectory-progress {
   }
 
   .trajectory-progress {
-    left: 50%;
-    bottom: 30px;
-    transform: translateX(-50%);
+    left: auto;
+    right: 16px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    transform: none;
     font-size: 8px;
-    letter-spacing: 0.48em;
+    letter-spacing: 0.28em;
+  }
+
+  .trajectory-progress-track {
+    width: 110px;
   }
 
   .orbital-sector-indicator {
-    left: 24px;
-    bottom: 30px;
+    left: 16px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    transform: none;
     font-size: 8px;
-    letter-spacing: 0.48em;
+    letter-spacing: 0.28em;
   }
 
   .orbital-sector-indicator i {
-    width: 150px;
+    width: 110px;
+    background: linear-gradient(90deg, rgba(157, 24, 255, 0.98), rgba(206, 142, 255, 0.32), rgba(244, 241, 234, 0.12), transparent);
+  }
+
+  /* ==========================================================================
+     MISSION PORTFOLIO MOBILE RESPONSIVENESS (MISSION 006)
+     ========================================================================== */
+  .mission-portfolio {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 80px 16px 60px;
+    min-height: auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mission-portfolio-copy {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mission-portfolio-copy .mission-portfolio-label {
+    margin-bottom: 16px;
+    font-size: 9px;
+    letter-spacing: 0.44em;
+  }
+
+  .mission-portfolio-copy h2 {
+    font-size: clamp(22px, 7.5vw, 28px);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .mission-portfolio-copy > p:last-child {
+    display: none;
+  }
+
+  .mission-portfolio-gallery-wrap {
+    width: 100%;
+    height: 240px;
+    min-height: 240px;
+    transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    margin: 10px 0;
+  }
+
+  /* Circular Gallery Mobile overrides */
+  .circular-gallery-item {
+    --gallery-item-w: 130px;
+    --gallery-item-h: 180px;
+  }
+
+  .circular-gallery-card-copy {
+    padding: 12px;
+  }
+
+  .circular-gallery-card-copy h3 {
+    font-size: 11px;
+    letter-spacing: 0.05em;
+  }
+
+  .circular-gallery-card-copy em {
+    font-size: 8px;
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  .circular-gallery-card-copy p {
+    display: none;
+  }
+
+  .mission-portfolio-selector {
+    width: 100%;
+    max-width: 290px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .mission-portfolio-selector > p {
+    margin: 0 0 20px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+
+  .mission-portfolio-project-list {
+    gap: 12px;
+  }
+
+  .mission-portfolio-project-list button {
+    text-align: center;
+    justify-items: center;
+    min-height: 48px;
+    padding: 4px 0;
+    gap: 4px;
+  }
+
+  .mission-portfolio-project-list button:hover,
+  .mission-portfolio-project-list button.is-active {
+    transform: scale(1.02);
+  }
+
+  .mission-portfolio-project-list strong {
+    font-size: 14px;
+  }
+
+  .mission-portfolio-project-list span {
+    font-size: 11px;
+  }
+
+  /* Footer mobile overrides */
+  .alienxip-footer {
+    padding: 40px 0 30px;
+  }
+
+  .alienxip-footer-effect-wrap {
+    height: auto;
+    aspect-ratio: 3 / 1;
+    max-height: 120px;
+    margin-bottom: 10px;
+  }
+
+  .alienxip-footer-content {
+    padding: 0 20px;
   }
 
 }
@@ -4690,6 +4813,27 @@ body[data-active-sector="005"] .trajectory-progress {
 
   .hero-subtitle {
     font-size: 14px;
+  }
+
+  /* Standardize all section headers on mobile to avoid overflows and poor wraps */
+  .mission-001-copy h2,
+  .mission-002-copy h2,
+  .mission-004-copy h2,
+  .mission-005-header h2,
+  .solutions-main-title,
+  .mission-portfolio-copy h2,
+  .mission-006-header h2,
+  .mission-007-copy h2 {
+    font-size: 30px !important;
+    line-height: 1.15 !important;
+  }
+
+  /* Adapt indicators separator lines on mobile to avoid overlapping at 320px */
+  .trajectory-progress-track {
+    width: clamp(40px, 15vw, 110px) !important;
+  }
+  .orbital-sector-indicator i {
+    width: clamp(40px, 15vw, 110px) !important;
   }
 }
 
@@ -5225,45 +5369,155 @@ body[data-active-sector="005"] .trajectory-progress {
   .solutions-mobile-layout {
     display: flex;
     flex-direction: column;
-    gap: 60px;
+    gap: 32px;
     margin-top: 40px;
     width: 100%;
-    padding: 0 24px;
+    padding: 0 16px;
+    align-items: center;
   }
 
-  .solutions-mobile-item {
+  .solutions-mobile-carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
     align-items: center;
-    border-bottom: 1px dashed rgba(183, 100, 255, 0.12);
-    padding-bottom: 40px;
+    overflow: hidden;
   }
 
-  .solutions-mobile-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+  .solutions-mobile-track {
+    display: flex;
+    width: 100%;
+    overflow: visible;
   }
 
-  .solutions-mobile-item .solutions-card-number-tag {
+  .solutions-mobile-track::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  .solutions-mobile-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 10px 0;
+  }
+
+  .solutions-mobile-slide .solutions-card-number-tag {
     align-self: flex-start;
-    margin-left: 0;
+    margin-left: 36px;
+    margin-bottom: 8px;
   }
 
-  .solutions-mobile-item .solutions-card-frame {
-    width: 100%;
-    max-width: 380px;
-    height: 480px;
+  .solutions-mobile-slide .solutions-card-frame {
+    width: 290px;
+    height: 390px;
+    position: relative;
+    border-radius: 12px;
   }
 
-  .solutions-mobile-item .solutions-description-content {
+  /* Make HUD border responsive on mobile slide */
+  .solutions-mobile-slide .card-hud-border {
+    position: absolute;
+    inset: -12px;
+    width: calc(100% + 24px);
+    height: calc(100% + 24px);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .solutions-mobile-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
-    max-width: 380px;
+    max-width: 290px;
+    margin: 0 auto;
     gap: 16px;
   }
 
-  .solutions-mobile-item .solutions-desc-title {
-    font-size: 24px;
+  .carousel-nav-btn {
+    background: rgba(183, 100, 255, 0.1);
+    border: 1px solid rgba(183, 100, 255, 0.3);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .carousel-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .carousel-nav-btn:not(:disabled):hover {
+    background: rgba(183, 100, 255, 0.2);
+    border-color: rgba(183, 100, 255, 0.6);
+    box-shadow: 0 0 10px rgba(183, 100, 255, 0.3);
+  }
+
+  .solutions-mobile-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .dot-btn {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dot-btn.is-active {
+    background: #b764ff;
+    box-shadow: 0 0 8px rgba(183, 100, 255, 0.8);
+    transform: scale(1.25);
+  }
+
+  .solutions-mobile-desc-wrap {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .solutions-mobile-desc-wrap .solutions-description-content {
+    gap: 16px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .solutions-mobile-desc-wrap .solution-tech-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .solutions-mobile-desc-wrap .solutions-desc-title {
+    font-size: 22px;
+  }
+
+  .solutions-mobile-desc-wrap .solutions-desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 0 auto;
+  }
+
+  .solutions-mobile-desc-wrap .solutions-explore-link {
+    justify-content: center;
   }
 }
 

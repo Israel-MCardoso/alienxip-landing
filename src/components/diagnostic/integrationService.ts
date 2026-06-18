@@ -52,10 +52,52 @@ export async function sendDiagnosticTransmission(payload: DiagnosticPayload): Pr
 
 /**
  * 1. EMAIL INTEGRATION (E.g. Resend, SendGrid, Amazon SES)
+ * Configured to send form data to comercial@alienxip.com.br via mailto link.
  */
-async function integrateEmail(_payload: DiagnosticPayload): Promise<void> {
-  // To integrate, replace with:
-  // fetch('api/send-email', { method: 'POST', body: JSON.stringify(payload) })
+async function integrateEmail(payload: DiagnosticPayload): Promise<void> {
+  const email = "comercial@alienxip.com.br";
+  const subject = "Novo relatório recebido pela landing page da ALIENXIP";
+  
+  const body = `
+==================================================
+RELATÓRIO DE DIAGNÓSTICO E TELEMETRIA - ALIENXIP
+==================================================
+
+DADOS DO COMANDANTE:
+--------------------------------------------------
+Nome: ${payload.answers.name || "Não informado"}
+Empresa: ${payload.answers.companyName || "Não informada"}
+E-mail: ${payload.answers.email || "Não informado"}
+WhatsApp: ${payload.answers.phone || "Não informado"}
+
+MÉTRICAS ORBITAIS:
+--------------------------------------------------
+Eficiência Geral (Maturidade): ${payload.metrics.score}%
+Atrito Técnico (Fricção): ${payload.metrics.technicalFriction}%
+Velocidade de Escala (Vendas): ${payload.metrics.salesVelocity}%
+Resistência de Marca: ${payload.metrics.brandDifferentiation}%
+Potencial de Automação: ${payload.metrics.automationPotential}
+Áreas Críticas: ${payload.metrics.criticalAreas.join(", ")}
+
+DADOS DO DIAGNÓSTICO:
+--------------------------------------------------
+Segmento: ${payload.answers.segment || "Não informado"}
+Foco Principal: ${payload.answers.focus || "Não informado"}
+Gargalos Identificados:
+${payload.answers.bottlenecks && payload.answers.bottlenecks.length > 0 
+  ? payload.answers.bottlenecks.map(b => `- ${b}`).join("\n") 
+  : "Nenhum gargalo selecionado"}
+Orçamento Estimado: ${payload.answers.budget || "Não informado"}
+Cronograma (Timeline): ${payload.answers.timeline || "Não informado"}
+
+==================================================
+Gerado automaticamente via Landing Page ALIENXIP
+==================================================
+  `.trim();
+
+  const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  
+  window.location.href = mailtoUrl;
 }
 
 /**

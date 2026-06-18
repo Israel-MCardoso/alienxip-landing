@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import { BorderBeam } from "../ui/border-beam";
-import placeholderVideo from "../../assets/hero-video.mp4";
 
 import clubeBoaVontadeLogo from "../../assets/clients/clube-atletico-boa-vontade-clean.webp";
 import familiaMineiraLogo from "../../assets/clients/familia-mineira-clean.webp";
@@ -10,6 +9,7 @@ import fides7Logo from "../../assets/clients/fides7-clean.webp";
 import institutoTransformandoLogo from "../../assets/clients/instituto-transformando-historia-clean.webp";
 import martronicsLogo from "../../assets/clients/martronics-clean.webp";
 import visionCarLogo from "../../assets/clients/vision-car-clean.webp";
+import sistemaEducacionalInspireLogo from "../../assets/clients/sistema-educacional-inspire-clean.png";
 
 type TestimonialSlide = {
   title: string;
@@ -35,7 +35,7 @@ const slideData: TestimonialSlide[] = [
     before: "processos manuais",
     src: clubeBoaVontadeLogo,
     tags: ["CRM Integration", "Funil de Vendas", "Conversão +41%"],
-    description: "Implementação de CRM e automação do processo de captação e triagem de atletas, otimizando o fluxo de matrículas e melhorando a conversão de novos alunos.",
+    description: "Implementação de CRM e automação do processo de captação e triagem de atletas, integrada ao desenvolvimento de um aplicativo exclusivo para gestão de sócios, controle financeiro, despesas e administração operacional da instituição.",
   },
   {
     title: "Operacao Familia Mineira",
@@ -59,7 +59,7 @@ const slideData: TestimonialSlide[] = [
     before: "rotina manual",
     src: faculdadeCidadeLogo,
     tags: ["Portal do Aluno", "Secretaria Digital", "Automatização"],
-    description: "Otimização dos fluxos acadêmicos internos, digitalização de processos de matrícula e implementação de sistema integrado de atendimento rápido ao estudante.",
+    description: "Otimização dos fluxos acadêmicos internos, digitalização de processos de matrícula, sistema de atendimento rápido e gestão de campanhas no Meta e Google Ads para captação de leads e crescimento da instituição.",
   },
   {
     title: "Operacao FIDES7",
@@ -70,8 +70,8 @@ const slideData: TestimonialSlide[] = [
     roi: "3.5x",
     before: "planilhas dispersas",
     src: fides7Logo,
-    tags: ["Gestão de Obras", "Sistemas Web", "Dashboards"],
-    description: "Desenvolvimento de plataforma web para controle de obras, orçamentos e suprimentos em tempo real, integrando o canteiro de obras diretamente com a gestão corporativa.",
+    tags: ["Landing Page", "Identidade Visual", "Branding"],
+    description: "Criação de landing page institucional e estruturação da presença digital, integrando a nova identidade visual e marca desenvolvidas em parceria com o designer Lusca.",
   },
   {
     title: "Operacao Transformar",
@@ -83,7 +83,7 @@ const slideData: TestimonialSlide[] = [
     before: "gestão descentralizada",
     src: institutoTransformandoLogo,
     tags: ["Gestão de Projetos", "Plataforma Social", "Automação"],
-    description: "Criação de sistema de cadastro de voluntários, controle de projetos sociais e captação de recursos, aumentando a eficiência administrativa do instituto.",
+    description: "Criação de sistema de CRM, cadastro de voluntários e captação de recursos, integrados a um aplicativo exclusivo para gestão de alunos, acompanhamento de carreiras e evolução dos participantes do instituto.",
   },
   {
     title: "Operacao Industria",
@@ -106,8 +106,20 @@ const slideData: TestimonialSlide[] = [
     roi: "4.5x",
     before: "fluxos desorganizados",
     src: visionCarLogo,
-    tags: ["Automação de Serviços", "Sistemas de Agendamento", "IA"],
-    description: "Plataforma integrada de agendamento, faturamento automático e controle de serviços automotivos personalizados com acompanhamento em tempo real para os clientes.",
+    tags: ["ERP Lava-rápidos", "Gestão de Clientes", "Faturamento"],
+    description: "ERP completo para lava-rápidos que centraliza os processos do negócio, automatizando agendamentos, gestão de clientes, controle operacional, faturamento e gestão financeira.",
+  },
+  {
+    title: "Operacao Inspire",
+    client: "Sistema Educacional Inspire",
+    sector: "115",
+    result: "+52%",
+    metric: "MATRICULAS",
+    roi: "4.8x",
+    before: "processos fragmentados",
+    src: sistemaEducacionalInspireLogo,
+    tags: ["Zoho CRM", "Tráfego Pago", "Automação"],
+    description: "Implantação do CRM Zoho e automação de processos comerciais, integradas a campanhas no Meta e Google Ads para captação de leads qualificados e geração de novas matrículas.",
   },
 ];
 
@@ -120,11 +132,9 @@ const REAL_START_INDEX = 4; // Virtual index 0 aligns here
 type TestimonialCardProps = {
   slide: TestimonialSlide;
   isActive: boolean;
-  isPlaying: boolean;
-  onPlayClick: () => void;
 };
 
-function TestimonialCard({ slide, isActive, isPlaying, onPlayClick }: TestimonialCardProps) {
+function TestimonialCard({ slide, isActive }: TestimonialCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -152,44 +162,13 @@ function TestimonialCard({ slide, isActive, isPlaying, onPlayClick }: Testimonia
             ))}
           </div>
 
-          {isPlaying ? (
-            <video
-              src={placeholderVideo}
-              autoPlay
-              controls
-              playsInline
-              className="mission-carousel-video"
-            />
-          ) : (
-            <>
-              <img 
-                src={slide.src} 
-                alt="" 
-                loading="lazy" 
-                decoding="async" 
-                draggable="false"
-              />
-              <button
-                type="button"
-                className="play-btn"
-                aria-label={`Assistir depoimento de ${slide.client}`}
-                onClick={onPlayClick}
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
-                  <path d="M8 5v14l11-7z" fill="currentColor" />
-                </svg>
-              </button>
-              <span className="media-status-tag">VIDEO REGISTRO RECUPERADO</span>
-
-              <div className="media-hud-crosshair top-left">+</div>
-              <div className="media-hud-crosshair top-right">+</div>
-              <div className="media-hud-crosshair bottom-left">+</div>
-              <div className="media-hud-crosshair bottom-right">+</div>
-              <div className="media-hud-rec-indicator">
-                <span className="dot animate-pulse"></span> REC
-              </div>
-            </>
-          )}
+          <img 
+            src={slide.src} 
+            alt={slide.client} 
+            loading="lazy" 
+            decoding="async" 
+            draggable="false"
+          />
         </div>
 
         <small className="operation-meta">OPERAÇÃO CLASSIFICADA // SETOR {slide.sector}</small>
@@ -214,21 +193,6 @@ function TestimonialCard({ slide, isActive, isPlaying, onPlayClick }: Testimonia
       <div className="bottom">
         <div className="bottom-inner">
           <p>{slide.description}</p>
-          <button
-            type="button"
-            className="btn_ primary"
-            onClick={onPlayClick}
-          >
-            ASSISTIR REGISTRO
-            <span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path
-                  d="M0.296578 0.296577C0.107498 0.485658 0.00127292 0.742106 0.00127292 1.00951C0.00127292 1.2769 0.107498 1.53335 0.296578 1.72243L8.55656 9.98241L1.00951 9.98099C0.741768 9.98099 0.484996 10.0873 0.295677 10.2767C0.106358 10.466 0 10.7228 0 10.9905C0 11.2582 0.106359 11.515 0.295678 11.7043C0.484997 11.8936 0.741768 12 1.00951 12H10.9905C11.1231 12.0002 11.2545 11.9742 11.377 11.9235C11.4996 11.8728 11.6109 11.7985 11.7047 11.7047C11.7985 11.6109 11.8728 11.4996 11.9235 11.377C11.9742 11.2545 12.0002 11.1231 12 10.9905V1.00951C12 0.876935 11.9739 0.745664 11.9232 0.623185C11.8724 0.500706 11.7981 0.389419 11.7043 0.295678C11.515 0.106359 11.2582 6.79977e-08 10.9905 0C10.7228 -6.79977e-08 10.466 0.106358 10.2767 0.295677C10.0873 0.484996 9.98099 0.741768 9.98099 1.00951L9.98241 8.55656L1.72243 0.296578C1.53335 0.107498 1.2769 0.00127339 1.0095 0.00127339C0.742105 0.00127339 0.485658 0.107497 0.296578 0.296577Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-          </button>
         </div>
       </div>
     </article>
@@ -240,7 +204,6 @@ export function MissionTestimonials() {
   const [offsetX, setOffsetX] = useState(0); // Track translateX translation value (px)
   const [isDragActive, setIsDragActive] = useState(false);
   const [isTransitionDisabled, setIsTransitionDisabled] = useState(false);
-  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
 
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
@@ -249,7 +212,6 @@ export function MissionTestimonials() {
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const startOffsetXRef = useRef(0);
-  const wasDraggingRef = useRef(false);
 
   // Helper to dynamically get slide width + gap spacing
   const getCardStep = () => {
@@ -266,6 +228,18 @@ export function MissionTestimonials() {
   // Helper to dynamically calculate alignment padding based on container size
   const getPaddingOffset = () => {
     const width = window.innerWidth;
+    if (width <= 780) {
+      const slider = sliderRef.current;
+      if (slider) {
+        const card = slider.querySelector(".mission-005-slide");
+        if (card) {
+          const cardWidth = card.getBoundingClientRect().width;
+          return (width - cardWidth) / 2;
+        }
+      }
+      const cardWidth = Math.min(width * 0.85, 340);
+      return (width - cardWidth) / 2;
+    }
     const padding = Math.max(24, (width - Math.min(1400, width - 80)) / 2 + 40);
     return padding;
   };
@@ -302,13 +276,13 @@ export function MissionTestimonials() {
 
     // Looping past left boundary clones
     if (currentLoopedIndex < REAL_START_INDEX) {
-      const targetLoopedIndex = currentLoopedIndex + 7;
+      const targetLoopedIndex = currentLoopedIndex + slideData.length;
       setIsTransitionDisabled(true);
       setOffsetX(-targetLoopedIndex * step + padding);
     } 
     // Looping past right boundary clones
-    else if (currentLoopedIndex > 10) {
-      const targetLoopedIndex = currentLoopedIndex - 7;
+    else if (currentLoopedIndex > REAL_START_INDEX + slideData.length - 1) {
+      const targetLoopedIndex = currentLoopedIndex - slideData.length;
       setIsTransitionDisabled(true);
       setOffsetX(-targetLoopedIndex * step + padding);
     }
@@ -323,7 +297,6 @@ export function MissionTestimonials() {
     setIsTransitionDisabled(false);
     setOffsetX(-targetLoopedIndex * step + padding);
     setActiveIndex(virtualIndex);
-    setPlayingIndex(null); // Pause videos on transition
   };
 
   // Loop back and forth infinitely on Prev/Next click
@@ -334,8 +307,7 @@ export function MissionTestimonials() {
 
     setIsTransitionDisabled(false);
     setOffsetX(-targetLooped * step + padding);
-    setActiveIndex((targetLooped - REAL_START_INDEX + 7) % 7);
-    setPlayingIndex(null);
+    setActiveIndex((targetLooped - REAL_START_INDEX + slideData.length) % slideData.length);
   };
 
   const handleNext = () => {
@@ -345,15 +317,13 @@ export function MissionTestimonials() {
 
     setIsTransitionDisabled(false);
     setOffsetX(-targetLooped * step + padding);
-    setActiveIndex((targetLooped - REAL_START_INDEX + 7) % 7);
-    setPlayingIndex(null);
+    setActiveIndex((targetLooped - REAL_START_INDEX + slideData.length) % slideData.length);
   };
 
   // Pointer drag event handlers
   const onDragStart = (e: React.MouseEvent | React.TouchEvent) => {
     isDraggingRef.current = true;
     setIsDragActive(true);
-    wasDraggingRef.current = false;
     setIsTransitionDisabled(true); // Disable animation during live drag tracking
 
     const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
@@ -366,10 +336,6 @@ export function MissionTestimonials() {
 
     const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
     const deltaX = pageX - startXRef.current;
-
-    if (Math.abs(deltaX) > 10) {
-      wasDraggingRef.current = true;
-    }
 
     setOffsetX(startOffsetXRef.current + deltaX);
   };
@@ -393,9 +359,8 @@ export function MissionTestimonials() {
 
     setOffsetX(-targetLoopedIndex * step + padding);
 
-    const virt = (targetLoopedIndex - REAL_START_INDEX + 7) % 7;
+    const virt = (targetLoopedIndex - REAL_START_INDEX + slideData.length) % slideData.length;
     setActiveIndex(virt);
-    setPlayingIndex(null);
   };
 
   return (
@@ -443,7 +408,7 @@ export function MissionTestimonials() {
           }}
         >
           {loopedSlides.map((slide, index) => {
-            const virtualIndex = (index - REAL_START_INDEX + 7) % 7;
+            const virtualIndex = (index - REAL_START_INDEX + slideData.length) % slideData.length;
             const isCardActive = activeIndex === virtualIndex;
             return (
               <div
@@ -454,11 +419,6 @@ export function MissionTestimonials() {
                 <TestimonialCard 
                   slide={slide} 
                   isActive={isCardActive} 
-                  isPlaying={playingIndex === index}
-                  onPlayClick={() => {
-                    if (wasDraggingRef.current) return;
-                    setPlayingIndex(index);
-                  }}
                 />
               </div>
             );

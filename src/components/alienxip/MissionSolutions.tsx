@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 
 // Import local assets
@@ -163,8 +163,26 @@ function CardHudBorder() {
   );
 }
 
+const prependedClones = solutionsSlides.slice(-3);
+const appendedClones = solutionsSlides.slice(0, 3);
+const loopedSlides = [...prependedClones, ...solutionsSlides, ...appendedClones];
+const REAL_START_INDEX = 3;
+
 export function MissionSolutions() {
+  const [activeMobileSlide, setActiveMobileSlide] = useState(0);
+  const [offsetX, setOffsetX] = useState(0);
+  const [isDragActive, setIsDragActive] = useState(false);
+  const [isTransitionDisabled, setIsTransitionDisabled] = useState(false);
+
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startOffsetXRef = useRef(0);
+  const wasDraggingRef = useRef(false);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
@@ -175,6 +193,118 @@ export function MissionSolutions() {
   
   // Transform scroll progress to translateX percentage of the horizontal track
   const x = useTransform(scrollProgress, [0, 1], ["0%", "-83.333%"]);
+
+  const getSlideWidth = () => {
+    if (mobileContainerRef.current) {
+      return mobileContainerRef.current.getBoundingClientRect().width;
+    }
+    return window.innerWidth;
+  };
+
+  // Initialize scroll positions on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const step = getSlideWidth();
+      setOffsetX(-REAL_START_INDEX * step);
+    }, 60);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Recalculate alignments dynamically on screen resize
+  useEffect(() => {
+    const handleResize = () => {
+      const step = getSlideWidth();
+      setIsTransitionDisabled(true);
+      setOffsetX(-(REAL_START_INDEX + activeMobileSlide) * step);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [activeMobileSlide]);
+
+  const handleTransitionEnd = () => {
+    if (isDraggingRef.current) return;
+
+    const step = getSlideWidth();
+    const currentLoopedIndex = Math.round(-offsetX / step);
+
+    if (currentLoopedIndex < REAL_START_INDEX) {
+      const targetLoopedIndex = currentLoopedIndex + 6;
+      setIsTransitionDisabled(true);
+      setOffsetX(-targetLoopedIndex * step);
+    } else if (currentLoopedIndex > REAL_START_INDEX + 5) {
+      const targetLoopedIndex = currentLoopedIndex - 6;
+      setIsTransitionDisabled(true);
+      setOffsetX(-targetLoopedIndex * step);
+    }
+  };
+
+  const scrollToSlide = (virtualIndex: number) => {
+    const step = getSlideWidth();
+    const targetLoopedIndex = REAL_START_INDEX + virtualIndex;
+
+    setIsTransitionDisabled(false);
+    setOffsetX(-targetLoopedIndex * step);
+    setActiveMobileSlide(virtualIndex);
+  };
+
+  const handlePrev = () => {
+    const step = getSlideWidth();
+    const targetLooped = REAL_START_INDEX + activeMobileSlide - 1;
+
+    setIsTransitionDisabled(false);
+    setOffsetX(-targetLooped * step);
+    setActiveMobileSlide((targetLooped - REAL_START_INDEX + 6) % 6);
+  };
+
+  const handleNext = () => {
+    const step = getSlideWidth();
+    const targetLooped = REAL_START_INDEX + activeMobileSlide + 1;
+
+    setIsTransitionDisabled(false);
+    setOffsetX(-targetLooped * step);
+    setActiveMobileSlide((targetLooped - REAL_START_INDEX + 6) % 6);
+  };
+
+  const onDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    isDraggingRef.current = true;
+    setIsDragActive(true);
+    wasDraggingRef.current = false;
+    setIsTransitionDisabled(true);
+
+    const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
+    startXRef.current = pageX;
+    startOffsetXRef.current = offsetX;
+  };
+
+  const onDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDraggingRef.current) return;
+
+    const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
+    const deltaX = pageX - startXRef.current;
+
+    if (Math.abs(deltaX) > 10) {
+      wasDraggingRef.current = true;
+    }
+
+    setOffsetX(startOffsetXRef.current + deltaX);
+  };
+
+  const onDragEnd = () => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    setIsDragActive(false);
+
+    const step = getSlideWidth();
+    setIsTransitionDisabled(false);
+
+    let targetLoopedIndex = Math.round(-offsetX / step);
+    targetLoopedIndex = Math.max(1, Math.min(loopedSlides.length - 2, targetLoopedIndex));
+
+    setOffsetX(-targetLoopedIndex * step);
+
+    const virt = (targetLoopedIndex - REAL_START_INDEX + 6) % 6;
+    setActiveMobileSlide(virt);
+  };
 
   return (
     <section
@@ -256,39 +386,101 @@ export function MissionSolutions() {
 
       {/* Mobile Layout fallback - stacked elements */}
       <div className="solutions-mobile-layout">
-        {solutionsSlides.map((slide, index) => (
-          <div key={slide.label} className="solutions-mobile-item">
-            <div className="solutions-card-number-tag">
-              [ <span className="number-val">00{index + 1}</span> ]
-            </div>
-            <div className="solutions-card-frame">
-              <CardHudBorder />
-              <div className="solutions-card-content-area">
-                <img
-                  src={slide.image}
-                  alt={slide.label}
-                  className="solutions-card-image"
-                  loading="lazy"
-                />
-                <div className="solutions-card-vignette" />
-                <div className="solutions-card-title-bottom">
-                  {slide.label}
+        <div className="solutions-mobile-carousel-container" ref={mobileContainerRef}>
+          <div 
+            className="solutions-mobile-track" 
+            ref={mobileTrackRef}
+            onMouseDown={onDragStart}
+            onMouseMove={onDragMove}
+            onMouseUp={onDragEnd}
+            onMouseLeave={onDragEnd}
+            onTouchStart={onDragStart}
+            onTouchMove={onDragMove}
+            onTouchEnd={onDragEnd}
+            onTransitionEnd={handleTransitionEnd}
+            style={{
+              transform: `translate3d(${offsetX}px, 0, 0)`,
+              transition: isTransitionDisabled ? "none" : "transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)",
+              cursor: isDragActive ? "grabbing" : "grab"
+            }}
+          >
+            {loopedSlides.map((slide, index) => {
+              const virtualIndex = (index - REAL_START_INDEX + 6) % 6;
+              return (
+                <div key={`${slide.label}-${index}`} className="solutions-mobile-slide">
+                  <div className="solutions-card-number-tag">
+                    [ <span className="number-val">00{virtualIndex + 1}</span> ]
+                  </div>
+                  <div className="solutions-card-frame">
+                    <CardHudBorder />
+                    <div className="solutions-card-content-area">
+                      <img
+                        src={slide.image}
+                        alt={slide.label}
+                        className="solutions-card-image"
+                        loading="lazy"
+                      />
+                      <div className="solutions-card-vignette" />
+                      <div className="solutions-card-title-bottom">
+                        {slide.label}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="solutions-description-content">
-              <SolutionTechIcon />
-              <h3 className="solutions-desc-title">
-                {slide.title} <br />
-                <span>{slide.spanTitle}</span>
-              </h3>
-              <p className="solutions-desc-text">
-                {slide.description}
-              </p>
-              <ExploreLink href="#diagnostico" label={slide.label} />
-            </div>
+              );
+            })}
           </div>
-        ))}
+
+          {/* Navigation Controls */}
+          <div className="solutions-mobile-controls">
+            <button 
+              type="button" 
+              className="carousel-nav-btn prev"
+              onClick={handlePrev}
+              aria-label="Solução anterior"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <div className="solutions-mobile-dots">
+              {solutionsSlides.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`dot-btn ${activeMobileSlide === i ? "is-active" : ""}`}
+                  onClick={() => scrollToSlide(i)}
+                  aria-label={`Ir para a solução ${i + 1}`}
+                />
+              ))}
+            </div>
+            <button 
+              type="button" 
+              className="carousel-nav-btn next"
+              onClick={handleNext}
+              aria-label="Próxima solução"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Active Description Display */}
+        <div className="solutions-mobile-desc-wrap">
+          <div className="solutions-description-content">
+            <SolutionTechIcon />
+            <h3 className="solutions-desc-title">
+              {solutionsSlides[activeMobileSlide].title} <br />
+              <span>{solutionsSlides[activeMobileSlide].spanTitle}</span>
+            </h3>
+            <p className="solutions-desc-text">
+              {solutionsSlides[activeMobileSlide].description}
+            </p>
+            <ExploreLink href="#diagnostico" label={solutionsSlides[activeMobileSlide].label} />
+          </div>
+        </div>
       </div>
     </section>
   );
