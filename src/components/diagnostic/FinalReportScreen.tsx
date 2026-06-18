@@ -405,7 +405,7 @@ export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) 
               RETORNO EM ATÉ 24 HORAS
             </p>
             <p className="question-description" style={{ fontSize: "13px", lineHeight: "1.6", color: "rgba(244, 241, 234, 0.6)" }}>
-              Nossos oficiais intergalácticos receberam suas coordenadas operacionais e iniciarão a análise profunda. Fique atento aos seus canais de transmissão.
+              Seu cliente de e-mail foi aberto para transmitir o relatório para comercial@alienxip.com.br. Conclua o envio no seu e-mail para que nossos oficiais analisem sua operação.
             </p>
             <motion.button 
               className="ctrl-btn ctrl-btn-primary" 
