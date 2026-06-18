@@ -9,6 +9,7 @@ import fides7Logo from "../../assets/clients/fides7-clean.webp";
 import institutoTransformandoLogo from "../../assets/clients/instituto-transformando-historia-clean.webp";
 import martronicsLogo from "../../assets/clients/martronics-clean.webp";
 import visionCarLogo from "../../assets/clients/vision-car-clean.webp";
+import sistemaEducacionalInspireLogo from "../../assets/clients/sistema-educacional-inspire-clean.png";
 
 type TestimonialSlide = {
   title: string;
@@ -34,7 +35,7 @@ const slideData: TestimonialSlide[] = [
     before: "processos manuais",
     src: clubeBoaVontadeLogo,
     tags: ["CRM Integration", "Funil de Vendas", "Conversão +41%"],
-    description: "Implementação de CRM e automação do processo de captação e triagem de atletas, otimizando o fluxo de matrículas e melhorando a conversão de novos alunos.",
+    description: "Implementação de CRM e automação do processo de captação e triagem de atletas, integrada ao desenvolvimento de um aplicativo exclusivo para gestão de sócios, controle financeiro, despesas e administração operacional da instituição.",
   },
   {
     title: "Operacao Familia Mineira",
@@ -58,7 +59,7 @@ const slideData: TestimonialSlide[] = [
     before: "rotina manual",
     src: faculdadeCidadeLogo,
     tags: ["Portal do Aluno", "Secretaria Digital", "Automatização"],
-    description: "Otimização dos fluxos acadêmicos internos, digitalização de processos de matrícula e implementação de sistema integrado de atendimento rápido ao estudante.",
+    description: "Otimização dos fluxos acadêmicos internos, digitalização de processos de matrícula, sistema de atendimento rápido e gestão de campanhas no Meta e Google Ads para captação de leads e crescimento da instituição.",
   },
   {
     title: "Operacao FIDES7",
@@ -69,8 +70,8 @@ const slideData: TestimonialSlide[] = [
     roi: "3.5x",
     before: "planilhas dispersas",
     src: fides7Logo,
-    tags: ["Gestão de Obras", "Sistemas Web", "Dashboards"],
-    description: "Desenvolvimento de plataforma web para controle de obras, orçamentos e suprimentos em tempo real, integrando o canteiro de obras diretamente com a gestão corporativa.",
+    tags: ["Landing Page", "Identidade Visual", "Branding"],
+    description: "Criação de landing page institucional e estruturação da presença digital, integrando a nova identidade visual e marca desenvolvidas em parceria com o designer Lusca.",
   },
   {
     title: "Operacao Transformar",
@@ -82,7 +83,7 @@ const slideData: TestimonialSlide[] = [
     before: "gestão descentralizada",
     src: institutoTransformandoLogo,
     tags: ["Gestão de Projetos", "Plataforma Social", "Automação"],
-    description: "Criação de sistema de cadastro de voluntários, controle de projetos sociais e captação de recursos, aumentando a eficiência administrativa do instituto.",
+    description: "Criação de sistema de CRM, cadastro de voluntários e captação de recursos, integrados a um aplicativo exclusivo para gestão de alunos, acompanhamento de carreiras e evolução dos participantes do instituto.",
   },
   {
     title: "Operacao Industria",
@@ -105,8 +106,20 @@ const slideData: TestimonialSlide[] = [
     roi: "4.5x",
     before: "fluxos desorganizados",
     src: visionCarLogo,
-    tags: ["Automação de Serviços", "Sistemas de Agendamento", "IA"],
-    description: "Plataforma integrada de agendamento, faturamento automático e controle de serviços automotivos personalizados com acompanhamento em tempo real para os clientes.",
+    tags: ["ERP Lava-rápidos", "Gestão de Clientes", "Faturamento"],
+    description: "ERP completo para lava-rápidos que centraliza os processos do negócio, automatizando agendamentos, gestão de clientes, controle operacional, faturamento e gestão financeira.",
+  },
+  {
+    title: "Operacao Inspire",
+    client: "Sistema Educacional Inspire",
+    sector: "115",
+    result: "+52%",
+    metric: "MATRICULAS",
+    roi: "4.8x",
+    before: "processos fragmentados",
+    src: sistemaEducacionalInspireLogo,
+    tags: ["Zoho CRM", "Tráfego Pago", "Automação"],
+    description: "Implantação do CRM Zoho e automação de processos comerciais, integradas a campanhas no Meta e Google Ads para captação de leads qualificados e geração de novas matrículas.",
   },
 ];
 
@@ -263,13 +276,13 @@ export function MissionTestimonials() {
 
     // Looping past left boundary clones
     if (currentLoopedIndex < REAL_START_INDEX) {
-      const targetLoopedIndex = currentLoopedIndex + 7;
+      const targetLoopedIndex = currentLoopedIndex + slideData.length;
       setIsTransitionDisabled(true);
       setOffsetX(-targetLoopedIndex * step + padding);
     } 
     // Looping past right boundary clones
-    else if (currentLoopedIndex > 10) {
-      const targetLoopedIndex = currentLoopedIndex - 7;
+    else if (currentLoopedIndex > REAL_START_INDEX + slideData.length - 1) {
+      const targetLoopedIndex = currentLoopedIndex - slideData.length;
       setIsTransitionDisabled(true);
       setOffsetX(-targetLoopedIndex * step + padding);
     }
@@ -294,7 +307,7 @@ export function MissionTestimonials() {
 
     setIsTransitionDisabled(false);
     setOffsetX(-targetLooped * step + padding);
-    setActiveIndex((targetLooped - REAL_START_INDEX + 7) % 7);
+    setActiveIndex((targetLooped - REAL_START_INDEX + slideData.length) % slideData.length);
   };
 
   const handleNext = () => {
@@ -304,7 +317,7 @@ export function MissionTestimonials() {
 
     setIsTransitionDisabled(false);
     setOffsetX(-targetLooped * step + padding);
-    setActiveIndex((targetLooped - REAL_START_INDEX + 7) % 7);
+    setActiveIndex((targetLooped - REAL_START_INDEX + slideData.length) % slideData.length);
   };
 
   // Pointer drag event handlers
@@ -346,7 +359,7 @@ export function MissionTestimonials() {
 
     setOffsetX(-targetLoopedIndex * step + padding);
 
-    const virt = (targetLoopedIndex - REAL_START_INDEX + 7) % 7;
+    const virt = (targetLoopedIndex - REAL_START_INDEX + slideData.length) % slideData.length;
     setActiveIndex(virt);
   };
 
@@ -395,7 +408,7 @@ export function MissionTestimonials() {
           }}
         >
           {loopedSlides.map((slide, index) => {
-            const virtualIndex = (index - REAL_START_INDEX + 7) % 7;
+            const virtualIndex = (index - REAL_START_INDEX + slideData.length) % slideData.length;
             const isCardActive = activeIndex === virtualIndex;
             return (
               <div

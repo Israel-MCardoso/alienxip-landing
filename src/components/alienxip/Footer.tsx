@@ -44,16 +44,16 @@ export function Footer() {
           <div className="alienxip-footer-links">
             <h4>Siga-nos</h4>
             <ul>
-              <li><FooterLink href="https://twitter.com/alienxip" target="_blank" rel="noopener noreferrer" text="Twitter" /></li>
-              <li><FooterLink href="https://linkedin.com/company/alienxip" target="_blank" rel="noopener noreferrer" text="LinkedIn" /></li>
-              <li><FooterLink href="https://github.com/alienxip" target="_blank" rel="noopener noreferrer" text="GitHub" /></li>
+              <li><FooterLink href="https://www.linkedin.com/company/alienxip/" target="_blank" rel="noopener noreferrer" text="LinkedIn" /></li>
+              <li><FooterLink href="https://www.youtube.com/@alienxip" target="_blank" rel="noopener noreferrer" text="YouTube" /></li>
             </ul>
           </div>
           
           <div className="alienxip-footer-links">
             <h4>Contato</h4>
             <ul>
-              <li><FooterLink href="mailto:contato@alienxip.com" className="alienxip-footer-email" text="contato@alienxip.com" /></li>
+              <li><FooterLink href="https://wa.me/5512988748815" target="_blank" rel="noopener noreferrer" text="WhatsApp" /></li>
+              <li><FooterLink href="mailto:comercial@alienxip.com.br" className="alienxip-footer-email" text="comercial@alienxip.com.br" /></li>
               <li><span>Resposta em até 24h</span></li>
               <li><span>Operação Confidencial</span></li>
             </ul>
