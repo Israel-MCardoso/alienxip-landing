@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
+import { getDiagnosticUrl } from "../../config/diagnosticUrl";
 
 // Import local assets
 import card1 from "../../assets/solutions/card-1.webp";
@@ -169,6 +170,7 @@ const loopedSlides = [...prependedClones, ...solutionsSlides, ...appendedClones]
 const REAL_START_INDEX = 3;
 
 export function MissionSolutions() {
+  const diagnosticUrl = getDiagnosticUrl();
   const [activeMobileSlide, setActiveMobileSlide] = useState(0);
   const [offsetX, setOffsetX] = useState(0);
   const [isDragActive, setIsDragActive] = useState(false);
@@ -372,7 +374,7 @@ export function MissionSolutions() {
                         <p className="solutions-desc-text">
                           {slide.description}
                         </p>
-                        <ExploreLink href="#diagnostico" label={slide.label} />
+                        <ExploreLink href={diagnosticUrl} label={slide.label} />
                       </div>
                     </div>
                   </div>
@@ -478,7 +480,7 @@ export function MissionSolutions() {
             <p className="solutions-desc-text">
               {solutionsSlides[activeMobileSlide].description}
             </p>
-            <ExploreLink href="#diagnostico" label={solutionsSlides[activeMobileSlide].label} />
+            <ExploreLink href={diagnosticUrl} label={solutionsSlides[activeMobileSlide].label} />
           </div>
         </div>
       </div>

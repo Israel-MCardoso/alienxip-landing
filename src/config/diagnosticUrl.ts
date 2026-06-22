@@ -1,15 +1,15 @@
+declare const process: any;
+
 export function getDiagnosticUrl() {
-  const configuredUrl = import.meta.env.NEXT_PUBLIC_DIAGNOSTIC_URL;
-
-  if (configuredUrl) {
-    return configuredUrl;
+  if (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+    return "/diagnostico";
   }
 
-  if (typeof window !== "undefined") {
-    return `${window.location.origin}/diagnostico`;
-  }
+  const envUrl = 
+    (typeof import.meta !== "undefined" && import.meta.env?.NEXT_PUBLIC_DIAGNOSTIC_URL) ||
+    (typeof process !== "undefined" && process?.env?.NEXT_PUBLIC_DIAGNOSTIC_URL);
 
-  return "/diagnostico";
+  return envUrl || "https://alienxip.com.br/diagnostico";
 }
 
 export function isDiagnosticEntry() {
