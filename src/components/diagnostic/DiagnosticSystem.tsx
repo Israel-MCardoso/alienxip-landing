@@ -21,13 +21,17 @@ function SpaceParticlesBackground() {
   const targetMouseRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    const mobileViewport = window.matchMedia("(max-width: 768px)").matches;
     const handleMouseMove = (e: MouseEvent) => {
       targetMouseRef.current = {
         x: (e.clientX / window.innerWidth) - 0.5,
         y: (e.clientY / window.innerHeight) - 0.5,
       };
     };
-    window.addEventListener("mousemove", handleMouseMove);
+
+    if (!mobileViewport) {
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    }
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -48,8 +52,12 @@ function SpaceParticlesBackground() {
       speedY: number;
     }> = [];
 
-    // Create 50 subtle drifting background star particles
-    for (let i = 0; i < 50; i++) {
+    const particleCount = mobileViewport ? 22 : 50;
+    const minFrameInterval = mobileViewport ? 1000 / 30 : 0;
+    let lastFrameTime = 0;
+
+    // Create subtle drifting background star particles
+    for (let i = 0; i < particleCount; i++) {
       const baseOpacity = Math.random() * 0.25 + 0.05;
       particles.push({
         x: Math.random() * w,
@@ -67,9 +75,15 @@ function SpaceParticlesBackground() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     };
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", resize, { passive: true });
 
-    const draw = () => {
+    const draw = (frameTime = performance.now()) => {
+      if (minFrameInterval > 0 && frameTime - lastFrameTime < minFrameInterval) {
+        animId = requestAnimationFrame(draw);
+        return;
+      }
+
+      lastFrameTime = frameTime;
       ctx.clearRect(0, 0, w, h);
 
       // Interpolate position inside the draw loop
@@ -98,7 +112,7 @@ function SpaceParticlesBackground() {
         ctx.arc(drawX, drawY, p.size, 0, Math.PI * 2);
         
         // Twinkling animation effect
-        const twinkling = Math.sin(Date.now() * 0.0015 + i) * 0.06;
+        const twinkling = Math.sin(frameTime * 0.0015 + i) * 0.06;
         ctx.fillStyle = `rgba(185, 92, 255, ${Math.max(0.02, p.baseOpacity + twinkling)})`;
         ctx.fill();
 
@@ -118,7 +132,9 @@ function SpaceParticlesBackground() {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", handleMouseMove);
+      if (!mobileViewport) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
     };
   }, []);
 
@@ -158,7 +174,9 @@ export function DiagnosticSystem({ onClose }: DiagnosticSystemProps) {
     phone?: string;
     segment?: string;
     focus?: string;
+    focusOther?: string;
     bottlenecks?: string[];
+    bottlenecksOther?: string;
     budget?: string;
     timeline?: string;
   }>({});
@@ -170,6 +188,12 @@ export function DiagnosticSystem({ onClose }: DiagnosticSystemProps) {
 
   // Parallax Direct DOM Update (no React re-renders)
   useEffect(() => {
+    const mobileViewport = window.matchMedia("(max-width: 768px)").matches;
+
+    if (mobileViewport) {
+      return undefined;
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       targetMouseRef.current = {
         x: (e.clientX / window.innerWidth) - 0.5,
@@ -177,7 +201,7 @@ export function DiagnosticSystem({ onClose }: DiagnosticSystemProps) {
       };
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     let animId: number;
     const updateTransforms = () => {
@@ -308,6 +332,7 @@ export function DiagnosticSystem({ onClose }: DiagnosticSystemProps) {
     { value: "ausencia_ia", label: "Ausência de IA" },
     { value: "sistemas_antigos", label: "Sistemas antigos" },
     { value: "crescimento_sem_estrutura", label: "Crescimento sem estrutura" },
+    { value: "outro", label: "Outro" },
   ];
 
   const budgetOptions: Option[] = [
@@ -324,8 +349,10 @@ export function DiagnosticSystem({ onClose }: DiagnosticSystemProps) {
     { value: "map", label: "Apenas mapeando", desc: "Estudos exploratórios de viabilidade espacial." },
   ];
 
+  const isReportPhase = phase === "REPORT";
+
   return (
-    <div className="diagnostic-overlay">
+    <div className={`diagnostic-overlay ${isReportPhase ? "is-report-phase" : ""}`}>
       {/* Drifting Space Particles with 3D Parallax */}
       <SpaceParticlesBackground />
       
@@ -355,12 +382,12 @@ export function DiagnosticSystem({ onClose }: DiagnosticSystemProps) {
 
       <div 
         ref={dashboardRef}
-        className="diagnostic-dashboard"
+        className={`diagnostic-dashboard ${isReportPhase ? "is-report-phase" : ""}`}
         style={{ 
           transition: "transform 0.15s ease-out"
         }}
       >
-        <div className="diagnostic-workstation">
+        <div className={`diagnostic-workstation ${isReportPhase ? "is-report-phase" : ""}`}>
           {phase === "BOOT" && (
             <BootScreen onComplete={() => setPhase("QUESTIONS")} />
           )}
@@ -401,10 +428,12 @@ export function DiagnosticSystem({ onClose }: DiagnosticSystemProps) {
                       const label = focusOptions.find((o) => o.value === val)?.label || "";
                       handleSelectChange("focus", val, label);
                     }}
+                    otherValue={answers.focusOther || ""}
+                    onOtherChange={(val) => setAnswers((prev) => ({ ...prev, focusOther: val }))}
                     onNext={nextStep}
                     onPrev={prevStep}
                     canPrev={true}
-                    canNext={!!answers.focus}
+                    canNext={!!answers.focus && (answers.focus !== "outro" || !!answers.focusOther?.trim())}
                     nextLabel="GERAR LEITURA PRELIMINAR →"
                   />
                 )}
@@ -421,10 +450,19 @@ export function DiagnosticSystem({ onClose }: DiagnosticSystemProps) {
                       setAnswers((prev) => ({ ...prev, bottlenecks: val }));
                       addLog(`Telemetria atualizada: ${val.length} sinais marcados.`, "normal");
                     }}
+                    otherValue={answers.bottlenecksOther || ""}
+                    onOtherChange={(val) => setAnswers((prev) => ({ ...prev, bottlenecksOther: val }))}
+                    otherInputId="other-bottleneck-description"
+                    otherInputLabel="Descreva o outro sinal detectado"
+                    otherInputPlaceholder="Ex: alto volume de mensagens sem resposta, fila comercial parada..."
                     onNext={nextStep}
                     onPrev={prevStep}
                     canPrev={true}
-                    canNext={!!answers.bottlenecks && answers.bottlenecks.length > 0}
+                    canNext={
+                      !!answers.bottlenecks &&
+                      answers.bottlenecks.length > 0 &&
+                      (!answers.bottlenecks.includes("outro") || !!answers.bottlenecksOther?.trim())
+                    }
                     nextLabel="CONTINUAR VARREDURA →"
                   />
                 )}

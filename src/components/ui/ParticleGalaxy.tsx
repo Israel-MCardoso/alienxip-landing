@@ -112,6 +112,7 @@ export function ParticleGalaxy({
     try {
       const canvas = canvasRef.current;
       const container = containerRef.current;
+      const mobileViewport = window.matchMedia("(max-width: 768px)").matches;
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, dimensions.width / dimensions.height, 0.1, 1000);
       camera.position.z = 3;
@@ -119,11 +120,11 @@ export function ParticleGalaxy({
       const renderer = new THREE.WebGLRenderer({
         canvas,
         alpha: true,
-        antialias: true,
+        antialias: !mobileViewport,
         preserveDrawingBuffer: false,
       });
       renderer.setSize(dimensions.width, dimensions.height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobileViewport ? 1 : 1.5));
       rendererRef.current = renderer;
 
       const geometry = new THREE.BufferGeometry();
@@ -350,20 +351,41 @@ export function ParticleGalaxy({
         touchStartDistance = 0;
       };
 
-      container.addEventListener("mousemove", handleMouseMove);
-      container.addEventListener("mouseleave", handleMouseLeave);
-      container.addEventListener("mousedown", handleMouseDown);
-      document.addEventListener("mousemove", handleMouseMoveGlobal);
-      document.addEventListener("mouseup", handleMouseUp);
-      container.addEventListener("wheel", handleWheel, { passive: false });
-      container.addEventListener("touchstart", handleTouchStart, { passive: false });
-      container.addEventListener("touchmove", handleTouchMove, { passive: false });
-      container.addEventListener("touchend", handleTouchEnd);
+      if (mouseInfluence > 0) {
+        container.addEventListener("mousemove", handleMouseMove, { passive: true });
+        container.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+      }
+
+      if (enableDrag) {
+        container.addEventListener("mousedown", handleMouseDown);
+        document.addEventListener("mousemove", handleMouseMoveGlobal);
+        document.addEventListener("mouseup", handleMouseUp);
+      }
+
+      if (enableZoom) {
+        container.addEventListener("wheel", handleWheel, { passive: false });
+      }
+
+      if (enableTouch) {
+        container.addEventListener("touchstart", handleTouchStart, { passive: true });
+        container.addEventListener("touchmove", handleTouchMove, { passive: enableZoom ? false : true });
+        container.addEventListener("touchend", handleTouchEnd, { passive: true });
+      }
       container.style.cursor = enableDrag ? "grab" : "default";
 
       const startTime = performance.now();
-      const animate = () => {
-        const elapsedTime = (performance.now() - startTime) / 1000;
+      let lastFrameTime = 0;
+      const minFrameInterval = mobileViewport ? 1000 / 30 : 0;
+      const animate = (frameTime = performance.now()) => {
+        if (minFrameInterval > 0 && frameTime - lastFrameTime < minFrameInterval) {
+          if (isActiveRef.current) {
+            frameRef.current = requestAnimationFrame(animate);
+          }
+          return;
+        }
+
+        lastFrameTime = frameTime;
+        const elapsedTime = (frameTime - startTime) / 1000;
 
         material.uniforms.uTime.value = elapsedTime;
         currentRotationRef.current.x += (targetRotationRef.current.x - currentRotationRef.current.x) * damping;
@@ -445,15 +467,26 @@ export function ParticleGalaxy({
 
       return () => {
         observer?.disconnect();
-        container.removeEventListener("mousemove", handleMouseMove);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-        container.removeEventListener("mousedown", handleMouseDown);
-        document.removeEventListener("mousemove", handleMouseMoveGlobal);
-        document.removeEventListener("mouseup", handleMouseUp);
-        container.removeEventListener("wheel", handleWheel);
-        container.removeEventListener("touchstart", handleTouchStart);
-        container.removeEventListener("touchmove", handleTouchMove);
-        container.removeEventListener("touchend", handleTouchEnd);
+        if (mouseInfluence > 0) {
+          container.removeEventListener("mousemove", handleMouseMove);
+          container.removeEventListener("mouseleave", handleMouseLeave);
+        }
+
+        if (enableDrag) {
+          container.removeEventListener("mousedown", handleMouseDown);
+          document.removeEventListener("mousemove", handleMouseMoveGlobal);
+          document.removeEventListener("mouseup", handleMouseUp);
+        }
+
+        if (enableZoom) {
+          container.removeEventListener("wheel", handleWheel);
+        }
+
+        if (enableTouch) {
+          container.removeEventListener("touchstart", handleTouchStart);
+          container.removeEventListener("touchmove", handleTouchMove);
+          container.removeEventListener("touchend", handleTouchEnd);
+        }
 
         stopAnimation();
 

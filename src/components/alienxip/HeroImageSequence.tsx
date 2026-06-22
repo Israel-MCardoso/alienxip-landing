@@ -53,6 +53,26 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
   const frameRequestRef = useRef<number | null>(null);
   const hasPendingResizeRef = useRef(true);
   const [isCanvasReady, setIsCanvasReady] = useState(false);
+  const [useStaticPoster, setUseStaticPoster] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 768px)").matches;
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleChange = () => {
+      setUseStaticPoster(mediaQuery.matches);
+    };
+
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
 
   const resizeCanvas = () => {
     const canvas = canvasRef.current;
@@ -97,7 +117,7 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
   };
 
   useEffect(() => {
-    if (typeof window === "undefined" || reduceMotion) return;
+    if (typeof window === "undefined" || reduceMotion || useStaticPoster) return;
 
     resizeCanvas();
     hasPendingResizeRef.current = false;
@@ -141,7 +161,7 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
       cancelled = true;
       window.removeEventListener("resize", handleResize);
     };
-  }, [reduceMotion]);
+  }, [reduceMotion, useStaticPoster]);
 
   useEffect(() => {
     return () => {
@@ -152,7 +172,7 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
   }, []);
 
   useMotionValueEvent(progress, "change", (latest) => {
-    if (reduceMotion || frames.length <= 1) return;
+    if (reduceMotion || useStaticPoster || frames.length <= 1) return;
 
     const clamped = Math.min(1, Math.max(0, latest));
     targetIndexRef.current = Math.round(clamped * (frames.length - 1));
@@ -168,7 +188,7 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
   return (
     <div className="hero-sequence" aria-hidden="true">
       <img className="hero-sequence-frame hero-sequence-poster" src={frames[0]} alt="" draggable="false" />
-      {!reduceMotion && (
+      {!reduceMotion && !useStaticPoster && (
         <canvas className={`hero-sequence-canvas ${isCanvasReady ? "is-ready" : ""}`} ref={canvasRef} />
       )}
       <div className="hero-sequence-vignette" />

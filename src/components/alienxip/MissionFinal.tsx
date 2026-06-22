@@ -3,6 +3,7 @@ import { ScrambleText } from "../ui/ScrambleText";
 import { motion } from "framer-motion";
 import { DeferredParticleGalaxy } from "../ui/DeferredParticleGalaxy";
 import portalImage from "../../assets/portal-final.webp";
+import { getDiagnosticUrl } from "../../config/diagnosticUrl";
 
 const finalSignals = [
   "diagnóstico gratuito",
@@ -20,12 +21,12 @@ function LockIcon() {
   );
 }
 export type MissionFinalProps = {
-  onStartDiagnostic?: () => void;
   isPortalActivating?: boolean;
 };
 
-export function MissionFinal({ onStartDiagnostic, isPortalActivating = false }: MissionFinalProps) {
+export function MissionFinal({ isPortalActivating = false }: MissionFinalProps) {
   const ctaRef = useRef<HTMLAnchorElement>(null);
+  const diagnosticUrl = getDiagnosticUrl();
 
   return (
     <section
@@ -99,11 +100,7 @@ export function MissionFinal({ onStartDiagnostic, isPortalActivating = false }: 
         <a
           ref={ctaRef}
           className="mission-007-cta"
-          href="#diagnostico-iniciado"
-          onClick={(e) => {
-            e.preventDefault();
-            onStartDiagnostic?.();
-          }}
+          href={diagnosticUrl}
         >
           <span className="mission-007-scan">
             <LockIcon />

@@ -33,10 +33,17 @@ html {
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 0;
   background: #000;
   color: var(--text);
   overflow-x: hidden;
+}
+
+html,
+body,
+#root,
+.alienxip-app {
+  max-width: 100%;
 }
 
 a {
@@ -4905,6 +4912,15 @@ body[data-active-sector="005"] .trajectory-progress {
 }
 
 @media (max-width: 768px) {
+  .alienxip-footer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 760px;
+  }
+
+  .hero-sequence-grain {
+    display: none;
+  }
+
   .alienxip-footer-grid {
     grid-template-columns: 1fr;
     gap: 30px;

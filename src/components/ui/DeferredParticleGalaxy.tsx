@@ -13,6 +13,26 @@ export function DeferredParticleGalaxy(props: ParticleGalaxyProps) {
   const { className } = props;
   const containerRef = useRef<HTMLDivElement>(null);
   const [shouldRender, setShouldRender] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 768px)").matches;
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleChange = () => {
+      setIsMobile(mediaQuery.matches);
+    };
+
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
 
   useEffect(() => {
     if (shouldRender) {
@@ -33,7 +53,7 @@ export function DeferredParticleGalaxy(props: ParticleGalaxyProps) {
           observer.disconnect();
         }
       },
-      { rootMargin: "1200px 0px" },
+      { rootMargin: isMobile ? "360px 0px" : "1200px 0px" },
     );
 
     observer.observe(container);
@@ -41,7 +61,7 @@ export function DeferredParticleGalaxy(props: ParticleGalaxyProps) {
     return () => {
       observer.disconnect();
     };
-  }, [shouldRender]);
+  }, [isMobile, shouldRender]);
 
   if (!shouldRender) {
     return <div ref={containerRef} className={cn("particle-galaxy", className)} aria-hidden="true" />;
@@ -49,7 +69,13 @@ export function DeferredParticleGalaxy(props: ParticleGalaxyProps) {
 
   return (
     <Suspense fallback={<div className={cn("particle-galaxy", className)} aria-hidden="true" />}>
-      <LazyParticleGalaxy {...props} />
+      <LazyParticleGalaxy
+        {...props}
+        particleCount={isMobile ? Math.min(props.particleCount ?? 10000, 2600) : props.particleCount}
+        glow={isMobile ? Math.min(props.glow ?? 60, 42) : props.glow}
+        mouseInfluence={isMobile ? 0 : props.mouseInfluence}
+        pulsate={isMobile ? false : props.pulsate}
+      />
     </Suspense>
   );
 }

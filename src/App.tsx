@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { HeroSection } from "./components/alienxip/HeroSection";
 import { ClientsMarquee } from "./components/alienxip/ClientsMarquee";
 import { CraterField } from "./components/alienxip/CraterField";
@@ -15,6 +15,7 @@ import { Starfield } from "./components/alienxip/Starfield";
 import { TrajectoryProgress } from "./components/alienxip/TrajectoryProgress";
 import { Footer } from "./components/alienxip/Footer";
 import { Preloader } from "./components/alienxip/Preloader";
+import { isDiagnosticEntry } from "./config/diagnosticUrl";
 const DiagnosticSystem = lazy(() =>
   import("./components/diagnostic/DiagnosticSystem").then((module) => ({
     default: module.DiagnosticSystem,
@@ -22,16 +23,13 @@ const DiagnosticSystem = lazy(() =>
 );
 
 export function App() {
+  const diagnosticEntry = isDiagnosticEntry();
   const [showPreloader, setShowPreloader] = useState(() => {
     if (typeof window !== "undefined") {
-      return !sessionStorage.getItem("alienxip_preloader_shown");
+      return !diagnosticEntry && !sessionStorage.getItem("alienxip_preloader_shown");
     }
     return true;
   });
-
-  const [isPortalActivating, setIsPortalActivating] = useState(false);
-  const [showDiagnostic, setShowDiagnostic] = useState(false);
-  const portalTimersRef = useRef<number[]>([]);
 
   useEffect(() => {
     if (showPreloader) {
@@ -45,26 +43,17 @@ export function App() {
     };
   }, [showPreloader]);
 
-  useEffect(() => {
-    return () => {
-      portalTimersRef.current.forEach((timerId) => window.clearTimeout(timerId));
-      portalTimersRef.current = [];
-    };
-  }, []);
-
-  const handleStartDiagnostic = () => {
-    portalTimersRef.current.forEach((timerId) => window.clearTimeout(timerId));
-    setIsPortalActivating(true);
-
-    portalTimersRef.current = [
-      window.setTimeout(() => {
-        setShowDiagnostic(true);
-      }, 1200),
-      window.setTimeout(() => {
-        setIsPortalActivating(false);
-      }, 2500),
-    ];
-  };
+  if (diagnosticEntry) {
+    return (
+      <Suspense fallback={<div className="diagnostic-loading-fallback" />}>
+        <DiagnosticSystem
+          onClose={() => {
+            window.location.href = "/";
+          }}
+        />
+      </Suspense>
+    );
+  }
 
   return (
     <>
@@ -95,60 +84,12 @@ export function App() {
           <MissionTestimonials />
           <MissionPortfolio />
           <MissionProtocols />
-          <MissionFinal 
-            onStartDiagnostic={handleStartDiagnostic}
-            isPortalActivating={isPortalActivating}
-          />
+          <MissionFinal />
           <Footer />
         </div>
         <OrbitalSectorIndicator />
         <TrajectoryProgress />
       </main>
-
-      <AnimatePresence>
-        {isPortalActivating && (
-          <motion.div
-            key="portal-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 999998,
-              background: "#030206",
-              pointerEvents: "none",
-            }}
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {showDiagnostic && (
-          <motion.div
-            key="diagnostic-modal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 999999,
-            }}
-          >
-            <Suspense fallback={<div className="diagnostic-loading-fallback" />}>
-              <DiagnosticSystem
-                onClose={() => {
-                  setShowDiagnostic(false);
-                  setIsPortalActivating(false);
-                }}
-              />
-            </Suspense>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }
