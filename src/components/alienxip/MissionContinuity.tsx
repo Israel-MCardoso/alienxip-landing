@@ -96,8 +96,13 @@ const missionSteps: MissionStep[] = [
 ];
 
 export function MissionContinuity() {
-  const [activeStep, setActiveStep] = useState<number | null>(null);
-  const active = activeStep === null ? null : missionSteps[activeStep];
+  const [selectedMissionOption, setSelectedMissionOption] = useState<number | null>(null);
+  const [isCardOpen, setIsCardOpen] = useState(false);
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
+
+  const activeStep = hoveredStep !== null ? hoveredStep : selectedMissionOption;
+  const active = activeStep !== null && activeStep !== undefined ? missionSteps[activeStep] : null;
+  const showCard = (isCardOpen && selectedMissionOption !== null) || hoveredStep !== null;
 
   return (
     <section
@@ -149,11 +154,14 @@ export function MissionContinuity() {
                 className={activeStep === index ? "mission-001-row is-selected" : "mission-001-row"}
                 key={step.title}
                 type="button"
-                onMouseEnter={() => setActiveStep(index)}
-                onMouseLeave={() => setActiveStep(null)}
-                onFocus={() => setActiveStep(index)}
-                onBlur={() => setActiveStep(null)}
-                onClick={() => setActiveStep(index)}
+                onMouseEnter={() => setHoveredStep(index)}
+                onMouseLeave={() => setHoveredStep(null)}
+                onFocus={() => setHoveredStep(index)}
+                onBlur={() => setHoveredStep(null)}
+                onClick={() => {
+                  setSelectedMissionOption(index);
+                  setIsCardOpen(true);
+                }}
               >
                 <div className="mission-001-row-text">
                   <span className="row-title">{step.title}</span>
@@ -197,7 +205,7 @@ export function MissionContinuity() {
           </div>
         </div>
 
-        {active && (
+        {showCard && active && (
           <motion.aside
             className="mission-scan-card"
             key={active.label}
