@@ -87,10 +87,14 @@ export function Navbar({ showMark = false }: NavbarProps) {
 
       <nav className={`nav-links ${isOpen ? "is-active" : ""}`} aria-label="Navegação principal">
         {navItems.map((item) => {
-          const href =
-            item === "DiagnÃ³stico"
-              ? diagnosticUrl
-              : `#${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`;
+          const isDiag =
+            item === "DiagnÃ³stico" ||
+            item === "Diagnóstico" ||
+            item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === "diagnostico";
+
+          const href = isDiag
+            ? diagnosticUrl
+            : `#${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`;
 
           return (
             <NavLink
