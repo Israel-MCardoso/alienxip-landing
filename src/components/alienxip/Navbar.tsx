@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
+import { getDiagnosticUrl } from "../../config/diagnosticUrl";
 
 import logoMark from "../../assets/alienxip-logo-mark-purple.png";
 
@@ -27,6 +28,7 @@ function NavLink({ href, text, onClick }: { href: string; text: string; onClick?
 export function Navbar({ showMark = false }: NavbarProps) {
   const brandRef = useRef<HTMLAnchorElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const diagnosticUrl = getDiagnosticUrl();
 
   // Close menu on pressing ESC key
   useEffect(() => {
@@ -84,14 +86,21 @@ export function Navbar({ showMark = false }: NavbarProps) {
       </button>
 
       <nav className={`nav-links ${isOpen ? "is-active" : ""}`} aria-label="Navegação principal">
-        {navItems.map((item) => (
-          <NavLink 
-            href={`#${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`} 
-            key={item} 
-            text={item} 
-            onClick={closeMenu}
-          />
-        ))}
+        {navItems.map((item) => {
+          const href =
+            item === "DiagnÃ³stico"
+              ? diagnosticUrl
+              : `#${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`;
+
+          return (
+            <NavLink
+              href={href}
+              key={item}
+              text={item}
+              onClick={closeMenu}
+            />
+          );
+        })}
       </nav>
     </header>
   );

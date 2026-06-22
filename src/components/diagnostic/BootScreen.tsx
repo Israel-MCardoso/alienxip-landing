@@ -48,7 +48,7 @@ export function BootScreen({ onComplete }: BootScreenProps) {
           onCompleteRef.current();
         }, 300); // Tiny pause at 100% before transition
       }
-    }, 20);
+    }, 50);
 
     return () => clearInterval(progressInterval);
   }, []);
@@ -63,6 +63,10 @@ export function BootScreen({ onComplete }: BootScreenProps) {
     let animationFrameId: number;
     let width = (canvas.width = canvas.offsetWidth);
     let height = (canvas.height = canvas.offsetHeight);
+    const mobileViewport = window.matchMedia("(max-width: 768px)").matches;
+    const particleCount = mobileViewport ? 16 : 35;
+    const minFrameInterval = mobileViewport ? 1000 / 30 : 0;
+    let lastFrameTime = 0;
 
     const particles: Array<{
       x: number;
@@ -72,8 +76,8 @@ export function BootScreen({ onComplete }: BootScreenProps) {
       opacity: number;
     }> = [];
 
-    // Create 35 discrete particles
-    for (let i = 0; i < 35; i++) {
+    // Create discrete particles
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -89,9 +93,15 @@ export function BootScreen({ onComplete }: BootScreenProps) {
       height = canvas.height = canvas.offsetHeight;
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
-    const draw = () => {
+    const draw = (frameTime = performance.now()) => {
+      if (minFrameInterval > 0 && frameTime - lastFrameTime < minFrameInterval) {
+        animationFrameId = requestAnimationFrame(draw);
+        return;
+      }
+
+      lastFrameTime = frameTime;
       ctx.clearRect(0, 0, width, height);
       ctx.fillStyle = "rgba(185, 92, 255, 0.4)";
 
