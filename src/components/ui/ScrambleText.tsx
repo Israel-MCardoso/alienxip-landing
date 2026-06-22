@@ -159,7 +159,7 @@ export function ScrambleText({
         return (
           <span key={lineIdx} style={{ display: "inline" }}>
             {words.map((word, wordIdx) => (
-              <span key={wordIdx} style={{ display: "inline", whiteSpace: "nowrap" }}>
+              <span key={wordIdx} style={{ display: "inline" }}>
                 <ScrambleWord
                   word={word}
                   characters={characters}
