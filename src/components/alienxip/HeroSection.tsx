@@ -1,12 +1,121 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import liquidGlassLogo from "../../assets/alienxip-liquid-glass-logo.webp";
+import lastFrame from "../../assets/hero-sequence-webp/hero-frame-120.webp";
 import { HeroImageSequence } from "./HeroImageSequence";
 import { ScrollCue } from "./ScrollCue";
 import { getDiagnosticUrl } from "../../config/diagnosticUrl";
 
 export function HeroSection() {
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleChange = () => setIsMobile(mediaQuery.matches);
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  // During initial hydration/render, default to mobile version (static/non-scroll-dependent)
+  // to prevent any hook execution, requestAnimationFrame, or scroll listeners on mobile devices.
+  if (isMobile === null || isMobile) {
+    return <MobileHeroSection />;
+  }
+
+  return <DesktopHeroSection />;
+}
+
+function MobileHeroSection() {
+  const btnPrimaryRef = useRef<HTMLAnchorElement>(null);
+  const btnSecondaryRef = useRef<HTMLAnchorElement>(null);
+  const diagnosticUrl = getDiagnosticUrl();
+
+  return (
+    <section className="hero-shell hero-shell-mobile" id="top">
+      <div className="hero-sticky hero-sticky-mobile">
+        <div className="hero-sequence hero-sequence-mobile" aria-hidden="true">
+          <img
+            className="hero-sequence-frame hero-sequence-poster hero-sequence-mobile-poster"
+            src={lastFrame}
+            alt=""
+            draggable="false"
+          />
+          <div className="hero-sequence-vignette" />
+          <div className="hero-sequence-grain" />
+        </div>
+        <img className="hero-watermark-cover" src={liquidGlassLogo} alt="" aria-hidden="true" draggable="false" />
+
+        <motion.div className="hero-content hero-content-mobile" style={{ opacity: 1 }}>
+          <motion.p
+            className="hero-label"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, ease: "easeOut", delay: 0.1 }}
+          >
+            ASSESSORIA EM TRANSFORMAÇÃO DIGITAL
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.22 }}
+          >
+            <ScrambleText text="Tecnologia para empresas" scrambleOnScroll={false} />
+            <br />
+            <ScrambleText text="que operam " scrambleOnScroll={false} />
+            <span>
+              <ScrambleText text="além" scrambleOnScroll={false} />
+            </span>
+            <ScrambleText text=" da" scrambleOnScroll={false} />
+            <br />
+            <ScrambleText text="órbita comum." scrambleOnScroll={false} />
+          </motion.h1>
+
+          <motion.p
+            className="hero-subtitle"
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut", delay: 0.46 }}
+          >
+            <ScrambleText text="Transformamos operações em sistemas inteligentes" scrambleOnScroll={false} />
+            <br />
+            <ScrambleText text="através de automação, IA e desenvolvimento estratégico." scrambleOnScroll={false} />
+          </motion.p>
+
+          <motion.div
+            className="hero-actions"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, ease: "easeOut", delay: 0.7 }}
+          >
+            <a ref={btnPrimaryRef} className="button button-primary" href={diagnosticUrl}>
+              <ScrambleText text="Iniciar diagnóstico estratégico" triggerRef={btnPrimaryRef} />
+              <span aria-hidden="true"> →</span>
+            </a>
+            <a ref={btnSecondaryRef} className="button button-secondary" href="#missao-001">
+              <ScrambleText text="Explorar missão" triggerRef={btnSecondaryRef} />
+            </a>
+          </motion.div>
+
+          <motion.p
+            className="hero-note"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut", delay: 0.94 }}
+          >
+            Ao final da análise inicial, sua empresa recebe
+            <br />
+            um diagnóstico estratégico gratuito.
+          </motion.p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function DesktopHeroSection() {
   const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -76,7 +185,6 @@ export function HeroSection() {
               <ScrambleText text="Explorar missão" triggerRef={btnSecondaryRef} />
             </a>
           </motion.div>
-
 
           <motion.p
             className="hero-note"
