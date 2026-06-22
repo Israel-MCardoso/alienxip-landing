@@ -4,6 +4,7 @@ import { ScrambleText } from "../ui/ScrambleText";
 import liquidGlassLogo from "../../assets/alienxip-liquid-glass-logo.webp";
 import { HeroImageSequence } from "./HeroImageSequence";
 import { ScrollCue } from "./ScrollCue";
+import { getDiagnosticUrl } from "../../config/diagnosticUrl";
 
 export function HeroSection() {
   const heroRef = useRef<HTMLElement | null>(null);
@@ -16,6 +17,7 @@ export function HeroSection() {
 
   const btnPrimaryRef = useRef<HTMLAnchorElement>(null);
   const btnSecondaryRef = useRef<HTMLAnchorElement>(null);
+  const diagnosticUrl = getDiagnosticUrl();
 
   return (
     <section className="hero-shell" id="top" ref={heroRef}>
@@ -66,7 +68,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease: "easeOut", delay: 0.7 }}
           >
-            <a ref={btnPrimaryRef} className="button button-primary" href="#diagnostico">
+            <a ref={btnPrimaryRef} className="button button-primary" href={diagnosticUrl}>
               <ScrambleText text="Iniciar diagnóstico estratégico" triggerRef={btnPrimaryRef} />
               <span aria-hidden="true"> →</span>
             </a>

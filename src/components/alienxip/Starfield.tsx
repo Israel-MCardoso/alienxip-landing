@@ -25,6 +25,8 @@ type Star = {
 };
 
 const getCanvasPixelRatio = () => Math.min(window.devicePixelRatio || 1, window.innerWidth <= 768 ? 1.5 : 2);
+const isMobileViewport = () =>
+  typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
 
 const createUuid = () => {
   const lut = Array.from({ length: 256 }, (_, i) => (i < 16 ? "0" : "") + i.toString(16));
@@ -114,6 +116,10 @@ export function Starfield({
 
     const compSpeed = hyperspace ? speed * warpFactor : speed;
     const fill = hyperspace ? `rgba(0,0,0,${opacity})` : bgColor;
+    const mobileViewport = isMobileViewport();
+    const effectiveQuantity = mobileViewport ? Math.min(quantity, 180) : quantity;
+    const effectiveMouseAdjust = mouseAdjust && !mobileViewport;
+    const minFrameInterval = mobileViewport ? 1000 / 30 : 0;
 
     const measureViewport = () => {
       const data = starRef.current;
@@ -141,7 +147,7 @@ export function Starfield({
 
     const bigBang = () => {
       const data = starRef.current;
-      data.arr = Array.from({ length: quantity }, () => ({
+      data.arr = Array.from({ length: effectiveQuantity }, () => ({
         x: Math.random() * data.w * 2 - data.x * 2,
         y: Math.random() * data.h * 2 - data.y * 2,
         z: Math.round(Math.random() * data.z),
@@ -208,8 +214,8 @@ export function Starfield({
 
     const update = (dt: number) => {
       const data = starRef.current;
-      const mx = mouseAdjust ? (cursorRef.current.x - data.x) / easing : 0;
-      const my = mouseAdjust ? (cursorRef.current.y - data.y) / easing : 0;
+      const mx = effectiveMouseAdjust ? (cursorRef.current.x - data.x) / easing : 0;
+      const my = effectiveMouseAdjust ? (cursorRef.current.y - data.y) / easing : 0;
 
       mouseRef.current.x = mx;
       mouseRef.current.y = my;
@@ -302,6 +308,13 @@ export function Starfield({
     };
 
     const animate = (time: number) => {
+      if (minFrameInterval > 0 && time - lastTimeRef.current < minFrameInterval) {
+        if (isActiveRef.current) {
+          animationFrameRef.current = requestAnimationFrame(animate);
+        }
+        return;
+      }
+
       if (hasPendingResizeRef.current) {
         resize();
         hasPendingResizeRef.current = false;
@@ -373,7 +386,7 @@ export function Starfield({
 
     window.addEventListener("resize", resizeHandler, { passive: true });
 
-    if (mouseAdjust) {
+    if (effectiveMouseAdjust) {
       parent.addEventListener("mousemove", mouseHandler, { passive: true });
     }
 

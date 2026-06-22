@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { sendDiagnosticTransmission } from "./integrationService";
 
@@ -10,7 +10,9 @@ interface FinalReportScreenProps {
     phone?: string;
     segment?: string;
     focus?: string;
+    focusOther?: string;
     bottlenecks?: string[];
+    bottlenecksOther?: string;
     budget?: string;
     timeline?: string;
   };
@@ -18,13 +20,7 @@ interface FinalReportScreenProps {
 }
 
 export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) {
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [contactData, setContactData] = useState({
-    name: answers.name || "",
-    phone: answers.phone || "",
-    email: answers.email || "",
-  });
+  const [sendStatus, setSendStatus] = useState<"sending" | "sent" | "error">("sending");
 
   // Calculate results based on inputs
   const companyName = answers.companyName || "Sua Operação";
@@ -123,8 +119,14 @@ export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) 
 
   // Animated score counter
   const [animatedScore, setAnimatedScore] = useState(0);
+  const reportSummary =
+    score < 50
+      ? "GRAVITAÃ‡ÃƒO INSTÃVEL: Sua empresa estÃ¡ perdendo energia estratÃ©gica."
+      : score < 75
+        ? "Ã“RBITA INTERMEDIÃRIA: Escala parcial, mas hÃ¡ vazamento de trÃ¡fego."
+        : "ESTABILIDADE INTERGALÃCTICA: Alto Ã­ndice de conversÃ£o e alinhamento.";
+
   useEffect(() => {
-    if (!formSubmitted) return;
     let start = 0;
     const end = score;
     const duration = 1200; // 1.2s count up duration
@@ -141,7 +143,7 @@ export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) 
     }, stepTime);
 
     return () => clearInterval(timer);
-  }, [formSubmitted, score]);
+  }, [score]);
 
   // Recommendations
   const getTechRec = () => {
@@ -165,39 +167,50 @@ export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) 
     return "Boa percepção de marca. Continue consolidando depoimentos e provas sociais no fundo do funil.";
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!contactData.name || !contactData.phone || !contactData.email) return;
+  const recommendations = [getTechRec(), getSalesRec(), getBrandRec()];
 
-    setIsSubmitting(true);
-    try {
-      await sendDiagnosticTransmission({
-        answers: {
-          ...answers,
-          name: contactData.name,
-          phone: contactData.phone,
-          email: contactData.email,
-        },
-        metrics: {
-          score,
-          technicalFriction,
-          salesVelocity,
-          brandDifferentiation,
-          automationPotential,
-          criticalAreas,
-        },
-      });
-      setFormSubmitted(true);
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error("Erro ao enviar a transmissão:", error);
+  useEffect(() => {
+    const transmitReport = async () => {
+      const hasRequiredContact =
+        !!answers.name?.trim() &&
+        !!answers.phone?.trim() &&
+        !!answers.email?.trim();
+
+      if (!hasRequiredContact) {
+        setSendStatus("error");
+        return;
       }
-      // Fallback: still show the success screen to avoid blocking the user flow
-      setFormSubmitted(true);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+
+      try {
+        await Promise.all([
+          sendDiagnosticTransmission({
+            answers,
+            metrics: {
+              score,
+              technicalFriction,
+              salesVelocity,
+              brandDifferentiation,
+              automationPotential,
+              criticalAreas,
+            },
+            report: {
+              companyName,
+              recommendations,
+              summary: reportSummary,
+            },
+          }),
+          new Promise((resolve) => window.setTimeout(resolve, 900)),
+        ]);
+        setSendStatus("sent");
+      } catch {
+        setSendStatus("error");
+      }
+    };
+
+    transmitReport();
+  }, [answers]);
+
+  const reportSent = true;
 
   return (
     <div className="report-screen">
@@ -206,56 +219,18 @@ export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) 
           className="question-text" 
           style={{ fontSize: "24px", color: "#b95cff", textShadow: "0 0 15px rgba(157, 24, 255, 0.4)" }}
         >
-          {formSubmitted ? "RELATÓRIO DE TELEMETRIA: " : "VARREDURA PRELIMINAR CONCLUÍDA: "}
+          {reportSent ? "RELATÓRIO DE TELEMETRIA: " : "VARREDURA PRELIMINAR CONCLUÍDA: "}
           {companyName.toUpperCase()}
         </h2>
         <p className="question-description" style={{ marginTop: "6px" }}>
-          {formSubmitted 
+          {reportSent 
             ? "Cruzamento estratégico concluído com o quadrante XIP. Plano operacional destravado abaixo."
-            : "Análise preliminar estruturada. Envie o sinal estratégico para liberar a telemetria detalhada de gauges."}
+            : "Análise preliminar estruturada. O relatório está sendo transmitido automaticamente para nossa central."}
         </p>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-        {!formSubmitted ? (
-          /* RELATÓRIO PRELIMINAR */
-          <div className="preliminary-report-panel">
-            <div className="prelim-header">
-              <span className="prelim-tag">STATUS OPERACIONAL</span>
-              <span className="prelim-status-val">COMPILADO</span>
-            </div>
-            
-            <div className="prelim-body">
-              <div className="prelim-item">
-                <span className="prelim-label">NÍVEL DE MATURIDADE:</span>
-                <span className="prelim-value score">{maturityScore}%</span>
-              </div>
-
-              <div className="prelim-item">
-                <span className="prelim-label">GARGALOS DETECTADOS:</span>
-                <span className="prelim-value badge">{detectedCount}</span>
-              </div>
-
-              <div className="prelim-item">
-                <span className="prelim-label">ÁREAS CRÍTICAS:</span>
-                <div className="prelim-areas-list">
-                  {criticalAreas.map((area) => (
-                    <span key={area} className="prelim-area-tag">{area}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="prelim-item">
-                <span className="prelim-label">POTENCIAL DE AUTOMAÇÃO:</span>
-                <span className={`prelim-value potential ${automationPotential.toLowerCase()}`}>
-                  {automationPotential}
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          /* FULL DETAILED EXECUTIVE TELEMETRY REPORT */
-          <>
+        <>
             <motion.div 
               className="report-score-box"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -343,22 +318,25 @@ export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) 
               </ul>
             </motion.div>
           </>
-        )}
       </div>
 
       <div className="docking-form-box">
-        {formSubmitted ? (
-          <div 
-            style={{ 
-              height: "100%", 
-              display: "flex", 
-              flexDirection: "column", 
-              justifyContent: "center", 
-              alignItems: "center",
-              textAlign: "center",
-              gap: "16px"
-            }}
-          >
+        <div 
+          className="transmission-status-panel"
+          data-status={sendStatus}
+        >
+          {sendStatus === "sending" ? (
+            <>
+              <div className="transmission-loader" aria-hidden="true" />
+              <h3 className="docking-title" style={{ color: "#b95cff", fontSize: "18px", letterSpacing: "0.2em", margin: 0 }}>
+                TRANSMITINDO RELATÓRIO
+              </h3>
+              <div className="transmission-status-badge">
+                ENVIO AUTOMÁTICO EM CURSO
+              </div>
+            </>
+          ) : sendStatus === "sent" ? (
+            <>
             <div 
               style={{ 
                 width: "60px", 
@@ -402,10 +380,7 @@ export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) 
               OPERAÇÃO REGISTRADA COM SUCESSO
             </div>
             <p className="question-description" style={{ fontSize: "14px", fontWeight: "bold", color: "#fff", letterSpacing: "0.05em", margin: "4px 0" }}>
-              RETORNO EM ATÉ 24 HORAS
-            </p>
-            <p className="question-description" style={{ fontSize: "13px", lineHeight: "1.6", color: "rgba(244, 241, 234, 0.6)" }}>
-              Seu cliente de e-mail foi aberto para transmitir o relatório para comercial@alienxip.com.br. Conclua o envio no seu e-mail para que nossos oficiais analisem sua operação.
+              RETORNO EM BREVE
             </p>
             <motion.button 
               className="ctrl-btn ctrl-btn-primary" 
@@ -414,65 +389,36 @@ export function FinalReportScreen({ answers, onClose }: FinalReportScreenProps) 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              RETORNAR À TERRA
+              Voltar para a Terra
             </motion.button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="docking-form-grid">
-            <h3 className="docking-title">TRANSMISSÃO PRONTA</h3>
-            <p className="docking-desc">
-              Seu diagnóstico preliminar foi registrado.<br /><br />
-              Nossa equipe analisará sua operação e retornará com recomendações específicas.
-            </p>
+            </>
+          ) : (
+            <>
+              <div className="transmission-error-icon" aria-hidden="true">!</div>
+              <h3 className="docking-title" style={{ color: "#ffaa00", fontSize: "18px", letterSpacing: "0.2em", margin: 0 }}>
+                FALHA NA TRANSMISSÃO
+              </h3>
+              <div className="transmission-status-badge error">
+                RELATÓRIO NÃO ENVIADO
+              </div>
+              <p className="question-description transmission-status-copy">
+                Não foi possível concluir o envio automático. Revise a configuração do endpoint de e-mail e tente gerar o diagnóstico novamente.
+              </p>
+            </>
+          )}
 
-            <div className="form-group">
-              <label htmlFor="commander-name">Nome do Comandante</label>
-              <input
-                id="commander-name"
-                type="text"
-                required
-                value={contactData.name}
-                onChange={(e) => setContactData({ ...contactData, name: e.target.value })}
-                placeholder="Ex: Major Tom"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="commander-whatsapp">Canal de Comunicação (WhatsApp)</label>
-              <input
-                id="commander-whatsapp"
-                type="tel"
-                required
-                value={contactData.phone}
-                onChange={(e) => setContactData({ ...contactData, phone: e.target.value })}
-                placeholder="Ex: (11) 99999-9999"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="commander-email">E-mail de Contato</label>
-              <input
-                id="commander-email"
-                type="email"
-                required
-                value={contactData.email}
-                onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
-                placeholder="Ex: comandante@empresa.space"
-              />
-            </div>
-
-            <motion.button 
-              type="submit" 
+          {sendStatus === "error" && (
+            <motion.button
               className="ctrl-btn ctrl-btn-primary" 
               style={{ marginTop: "12px", width: "100%", justifyContent: "center" }}
-              disabled={isSubmitting}
-              whileHover={!isSubmitting ? { scale: 1.02, y: -2 } : {}}
-              whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+              onClick={onClose}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              {isSubmitting ? "ENVIANDO TRANSMISSÃO..." : "ENVIAR TRANSMISSÃO"}
+              Voltar para a Terra
             </motion.button>
-          </form>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

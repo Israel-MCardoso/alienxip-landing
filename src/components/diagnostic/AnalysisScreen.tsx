@@ -71,7 +71,7 @@ export function AnalysisScreen({ onComplete }: AnalysisScreenProps) {
           onCompleteRef.current();
         }, 400);
       }
-    }, 30);
+    }, 60);
 
     return () => clearInterval(timer);
   }, []);
@@ -86,6 +86,10 @@ export function AnalysisScreen({ onComplete }: AnalysisScreenProps) {
     let animId: number;
     let w = (canvas.width = canvas.offsetWidth);
     let h = (canvas.height = canvas.offsetHeight);
+    const mobileViewport = window.matchMedia("(max-width: 768px)").matches;
+    const particleCount = mobileViewport ? 18 : 40;
+    const minFrameInterval = mobileViewport ? 1000 / 30 : 0;
+    let lastFrameTime = 0;
 
     const particles: Array<{
       x: number;
@@ -95,8 +99,8 @@ export function AnalysisScreen({ onComplete }: AnalysisScreenProps) {
       opacity: number;
     }> = [];
 
-    // Create 40 streaming point lines
-    for (let i = 0; i < 40; i++) {
+    // Create streaming point lines
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * w,
         y: Math.random() * h,
@@ -111,9 +115,15 @@ export function AnalysisScreen({ onComplete }: AnalysisScreenProps) {
       w = canvas.width = canvas.offsetWidth;
       h = canvas.height = canvas.offsetHeight;
     };
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", resize, { passive: true });
 
-    const draw = () => {
+    const draw = (frameTime = performance.now()) => {
+      if (minFrameInterval > 0 && frameTime - lastFrameTime < minFrameInterval) {
+        animId = requestAnimationFrame(draw);
+        return;
+      }
+
+      lastFrameTime = frameTime;
       ctx.clearRect(0, 0, w, h);
 
       for (let i = 0; i < particles.length; i++) {

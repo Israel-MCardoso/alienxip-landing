@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import { TextHoverEffect } from "../ui/TextHoverEffect";
 import logoImage from "../../assets/alienxip-liquid-glass-logo.webp";
+import { getDiagnosticUrl } from "../../config/diagnosticUrl";
 
 interface FooterLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   text: string;
@@ -17,6 +18,8 @@ function FooterLink({ text, href, className, ...props }: FooterLinkProps) {
 }
 
 export function Footer() {
+  const diagnosticUrl = getDiagnosticUrl();
+
   return (
     <footer className="alienxip-footer" id="contato">
       <div className="alienxip-footer-effect-wrap">
@@ -37,7 +40,7 @@ export function Footer() {
             <ul>
               <li><FooterLink href="#top" text="Início" /></li>
               <li><FooterLink href="#sobre" text="Sobre" /></li>
-              <li><FooterLink href="#diagnostico" text="Diagnóstico" /></li>
+              <li><FooterLink href={diagnosticUrl} text="Diagnóstico" /></li>
             </ul>
           </div>
           

@@ -13,6 +13,14 @@
   flex-direction: column;
 }
 
+.diagnostic-overlay.is-report-phase {
+  height: 100dvh;
+  min-height: 0;
+  overscroll-behavior: contain;
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Grid & Scanlines Backdrop */
 .diagnostic-backdrop {
   position: absolute;
@@ -144,6 +152,16 @@
   margin: 0 auto;
   min-height: 0;
   box-sizing: border-box;
+  min-width: 0;
+}
+
+.diagnostic-dashboard.is-report-phase {
+  display: block;
+  flex: 0 0 auto;
+  max-width: 1120px;
+  min-height: auto;
+  padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+  transform: none !important;
 }
 
 @media (max-width: 1024px) {
@@ -161,6 +179,14 @@
   gap: 24px;
   justify-content: center;
   min-height: 500px;
+  min-width: 0;
+}
+
+.diagnostic-workstation.is-report-phase {
+  display: block;
+  justify-content: flex-start;
+  min-height: auto;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 /* Progress Tracker HUD */
@@ -405,6 +431,178 @@
   font-size: 12px;
   color: rgba(244, 241, 234, 0.5);
   font-weight: 300;
+}
+
+.mobile-select-wrapper {
+  display: none;
+}
+
+.mobile-select-label,
+.other-service-dialog h3,
+.other-service-summary span {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: rgba(244, 241, 234, 0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mobile-option-select {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 13px 16px;
+  font-size: 14px;
+  color: #fff;
+  font-family: 'Share Tech Mono', monospace;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.mobile-option-select:focus,
+.other-service-dialog textarea:focus {
+  outline: none;
+  border-color: #9d18ff;
+  box-shadow: 0 0 10px rgba(157, 24, 255, 0.2);
+  background: rgba(157, 24, 255, 0.02);
+}
+
+.mobile-select-chevron {
+  color: #b95cff;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.mobile-select-menu {
+  background: rgba(7, 4, 14, 0.98);
+  border: 1px solid rgba(185, 92, 255, 0.75);
+  border-radius: 6px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65), 0 0 24px rgba(157, 24, 255, 0.18);
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+  position: relative;
+  z-index: 20;
+}
+
+.mobile-select-option {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(244, 241, 234, 0.84);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  gap: 3px;
+  padding: 13px 16px;
+  text-align: left;
+}
+
+.mobile-select-option:last-child {
+  border-bottom: 0;
+}
+
+.mobile-select-option small {
+  color: rgba(244, 241, 234, 0.48);
+  font-family: Inter, sans-serif;
+  font-size: 11px;
+}
+
+.mobile-select-option:hover,
+.mobile-select-option.is-selected {
+  background: rgba(157, 24, 255, 0.18);
+  color: #fff;
+}
+
+.other-service-summary {
+  width: 100%;
+  margin-top: 18px;
+  background: rgba(157, 24, 255, 0.08);
+  border: 1px solid rgba(185, 92, 255, 0.35);
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.other-service-summary strong {
+  color: rgba(244, 241, 234, 0.86);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.other-service-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000004;
+  background: rgba(3, 2, 6, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.other-service-dialog {
+  width: min(460px, 100%);
+  background: rgba(12, 7, 22, 0.98);
+  border: 1px solid rgba(185, 92, 255, 0.65);
+  border-radius: 8px;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.72), inset 0 0 24px rgba(157, 24, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+}
+
+.other-service-dialog h3 {
+  color: #b95cff;
+  font-size: 13px;
+  margin: 0;
+}
+
+.other-service-dialog p {
+  color: rgba(244, 241, 234, 0.62);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.other-service-dialog textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: #fff;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 120px;
+  padding: 13px 16px;
+  resize: vertical;
+}
+
+.other-service-dialog-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
 }
 
 .option-checkbox-indicator {
@@ -701,6 +899,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
@@ -714,6 +916,7 @@
   border-bottom: 1px solid rgba(157, 24, 255, 0.15);
   padding-bottom: 20px;
   margin-bottom: 10px;
+  min-width: 0;
 }
 
 .report-score-box {
@@ -727,6 +930,7 @@
   gap: 12px;
   text-align: center;
   position: relative;
+  min-width: 0;
 }
 
 .report-score-value {
@@ -758,12 +962,15 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 6px;
   padding: 16px;
+  min-width: 0;
 }
 
 .gauge-card-info {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
   margin-bottom: 8px;
+  min-width: 0;
 }
 
 .gauge-title {
@@ -771,6 +978,8 @@
   font-size: 13px;
   font-weight: 500;
   color: #fff;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .gauge-percentage {
@@ -801,6 +1010,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
 .rec-title {
@@ -826,6 +1036,7 @@
   color: rgba(244, 241, 234, 0.7);
   display: flex;
   gap: 10px;
+  overflow-wrap: anywhere;
 }
 
 .rec-item-dot {
@@ -840,6 +1051,69 @@
   border-radius: 6px;
   padding: 30px;
   box-shadow: 0 0 30px rgba(157, 24, 255, 0.05);
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.transmission-status-panel {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.transmission-loader {
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(185, 92, 255, 0.2);
+  border-top-color: #b95cff;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(157, 24, 255, 0.18);
+  animation: rotateSweep 1.1s linear infinite;
+}
+
+.transmission-status-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #00ffaa;
+  border: 1px solid rgba(0, 255, 170, 0.3);
+  background: rgba(0, 255, 170, 0.05);
+  padding: 4px 12px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 8px rgba(0, 255, 170, 0.3);
+  display: inline-block;
+}
+
+.transmission-status-badge.error {
+  color: #ffaa00;
+  border-color: rgba(255, 170, 0, 0.3);
+  background: rgba(255, 170, 0, 0.05);
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.24);
+}
+
+.transmission-status-copy {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(244, 241, 234, 0.6);
+  overflow-wrap: anywhere;
+}
+
+.transmission-error-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 170, 0, 0.1);
+  border: 1px solid #ffaa00;
+  color: #ffaa00;
+  display: grid;
+  place-items: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  box-shadow: 0 0 20px rgba(255, 170, 0, 0.18);
 }
 
 .docking-title {
@@ -1432,6 +1706,8 @@
     0 10px 40px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .prelim-header {
@@ -1475,6 +1751,8 @@
   align-items: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   padding-bottom: 14px;
+  gap: 14px;
+  min-width: 0;
 }
 
 .prelim-item:last-child {
@@ -1487,6 +1765,7 @@
   font-size: 12px;
   color: rgba(244, 241, 234, 0.58);
   letter-spacing: 0.05em;
+  overflow-wrap: anywhere;
 }
 
 .prelim-value {
@@ -1568,8 +1847,26 @@
    ========================================================================== */
 
 @media (max-width: 768px) {
+  .diagnostic-scanline {
+    display: none;
+  }
+
+  .diagnostic-backdrop {
+    transition: none !important;
+  }
+
+  .diagnostic-overlay.is-report-phase {
+    align-items: stretch;
+    overflow-y: scroll;
+  }
+
   .diagnostic-hud-header {
     padding: 12px 16px;
+  }
+
+  .diagnostic-overlay.is-report-phase .diagnostic-hud-header {
+    position: sticky;
+    top: 0;
   }
 
   .hud-status-node {
@@ -1590,19 +1887,65 @@
   .diagnostic-dashboard {
     padding: 16px;
     gap: 20px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .diagnostic-dashboard.is-report-phase {
+    padding: 12px 10px calc(52px + env(safe-area-inset-bottom, 0px));
+    width: 100%;
+  }
+
+  .diagnostic-workstation.is-report-phase {
+    padding-bottom: calc(44px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .terminal-panel {
+    display: none;
   }
 
   .question-card-container {
     padding: 24px 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .mobile-select-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mobile-select-wrapper + .options-grid,
+  .mobile-select-wrapper + .multiselect-grid {
+    display: none;
   }
 
   .report-screen {
     padding: 20px;
     gap: 20px;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
   }
 
   .preliminary-report-panel {
     padding: 20px;
+  }
+
+  .prelim-header,
+  .prelim-item,
+  .gauge-card-info {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .prelim-areas-list {
+    justify-content: flex-start;
+  }
+
+  .docking-form-box {
+    padding: 22px;
   }
 }
 
@@ -1681,6 +2024,36 @@
   .ctrl-btn {
     padding: 10px 18px;
     font-size: 11px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .question-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .report-screen {
+    padding: 14px;
+    gap: 16px;
+  }
+
+  .report-score-value {
+    font-size: 40px;
+  }
+
+  .docking-form-box,
+  .preliminary-report-panel,
+  .report-recommendations,
+  .report-score-box {
+    padding: 18px;
+  }
+
+  .docking-title {
+    font-size: 13px !important;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
   }
   
   .analysis-screen {

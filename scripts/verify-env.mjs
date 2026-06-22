@@ -1,6 +1,7 @@
 const publicOptional = [
   "VITE_ANALYTICS_ID",
   "VITE_PUBLIC_SITE_URL",
+  "NEXT_PUBLIC_DIAGNOSTIC_URL",
 ];
 
 const forbiddenClientEnv = [

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 export interface Option {
@@ -19,6 +20,11 @@ interface QuestionCardProps {
   canPrev: boolean;
   canNext: boolean;
   nextLabel?: string;
+  otherValue?: string;
+  onOtherChange?: (value: string) => void;
+  otherInputId?: string;
+  otherInputLabel?: string;
+  otherInputPlaceholder?: string;
 }
 
 export function QuestionCard({
@@ -34,7 +40,14 @@ export function QuestionCard({
   canPrev,
   canNext,
   nextLabel,
+  otherValue = "",
+  onOtherChange,
+  otherInputId = "other-service-description",
+  otherInputLabel = "Descreva o serviço desejado",
+  otherInputPlaceholder = "Ex: automação de atendimento, CRM, IA para WhatsApp...",
 }: QuestionCardProps) {
+  const [isMobileSelectOpen, setIsMobileSelectOpen] = useState(false);
+  const [isOtherDialogOpen, setIsOtherDialogOpen] = useState(false);
   
   const handleSelectOption = (optionValue: string) => {
     if (type === "select") {
@@ -47,6 +60,10 @@ export function QuestionCard({
         onChange([...currentValues, optionValue]);
       }
     }
+
+    if (optionValue === "outro" && onOtherChange) {
+      setIsOtherDialogOpen(true);
+    }
   };
 
   const isOptionSelected = (optionValue: string) => {
@@ -58,6 +75,13 @@ export function QuestionCard({
     }
     return false;
   };
+
+  const hasOtherSelected =
+    value === "outro" || (Array.isArray(value) && value.includes("outro"));
+  const selectedOptionLabel =
+    type === "select"
+      ? options.find((option) => option.value === value)?.label
+      : undefined;
 
   return (
     <div className="question-card-container">
@@ -82,43 +106,128 @@ export function QuestionCard({
       )}
 
       {(type === "select" || type === "multiselect") && (
-        <div className={(type === "multiselect" || options.length > 4) ? "multiselect-grid" : "options-grid"}>
-          {options.map((option) => {
-            const selected = isOptionSelected(option.value);
-            return (
-              <motion.div
-                key={option.value}
-                className={`option-card ${selected ? "is-selected" : ""}`}
-                onClick={() => handleSelectOption(option.value)}
-                whileHover={{ x: 6, backgroundColor: "rgba(157, 24, 255, 0.05)" }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 450, damping: 25 }}
+        <>
+          {type === "select" && (
+            <div className="mobile-select-wrapper">
+              <span className="mobile-select-label">Selecionar opção</span>
+              <button
+                type="button"
+                className="mobile-option-select"
+                aria-expanded={isMobileSelectOpen}
+                onClick={() => setIsMobileSelectOpen((open) => !open)}
               >
-                <div className="option-text-wrap">
-                  <span className="option-title">{option.label}</span>
-                  {option.desc && <span className="option-desc">{option.desc}</span>}
-                </div>
-                <div className="option-checkbox-indicator">
-                  {selected && (
-                    <motion.svg 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor"
-                      initial={{ scale: 0, rotate: -20 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                <span>{selectedOptionLabel || "Selecione uma opção"}</span>
+                <span className="mobile-select-chevron" aria-hidden="true">⌄</span>
+              </button>
+              {isMobileSelectOpen && (
+                <div className="mobile-select-menu">
+                  {options.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      className={`mobile-select-option ${value === option.value ? "is-selected" : ""}`}
+                      onClick={() => {
+                        handleSelectOption(option.value);
+                        setIsMobileSelectOpen(false);
+                      }}
                     >
-                      <path
-                        d="M20 6L9 17L4 12"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </motion.svg>
-                  )}
+                      <span>{option.label}</span>
+                      {option.desc && <small>{option.desc}</small>}
+                    </button>
+                  ))}
                 </div>
-              </motion.div>
-            );
-          })}
+              )}
+            </div>
+          )}
+
+          <div className={(type === "multiselect" || options.length > 4) ? "multiselect-grid" : "options-grid"}>
+            {options.map((option) => {
+              const selected = isOptionSelected(option.value);
+              return (
+                <motion.div
+                  key={option.value}
+                  className={`option-card ${selected ? "is-selected" : ""}`}
+                  onClick={() => handleSelectOption(option.value)}
+                  whileHover={{ x: 6, backgroundColor: "rgba(157, 24, 255, 0.05)" }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 25 }}
+                >
+                  <div className="option-text-wrap">
+                    <span className="option-title">{option.label}</span>
+                    {option.desc && <span className="option-desc">{option.desc}</span>}
+                  </div>
+                  <div className="option-checkbox-indicator">
+                    {selected && (
+                      <motion.svg 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor"
+                        initial={{ scale: 0, rotate: -20 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                      >
+                        <path
+                          d="M20 6L9 17L4 12"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </motion.svg>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {hasOtherSelected && onOtherChange && otherValue.trim() && (
+        <button
+          type="button"
+          className="other-service-summary"
+          onClick={() => setIsOtherDialogOpen(true)}
+        >
+          <span>Outro informado:</span>
+          <strong>{otherValue}</strong>
+        </button>
+      )}
+
+      {hasOtherSelected && onOtherChange && isOtherDialogOpen && (
+        <div className="other-service-dialog-backdrop" role="dialog" aria-modal="true" aria-labelledby={`${otherInputId}-title`}>
+          <motion.div
+            className="other-service-dialog"
+            initial={{ opacity: 0, scale: 0.96, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <h3 id={`${otherInputId}-title`}>{otherInputLabel}</h3>
+            <p>Informe manualmente a opção para que ela entre no relatório final.</p>
+            <textarea
+              id={`${otherInputId}-dialog`}
+              value={otherValue}
+              onChange={(event) => onOtherChange(event.target.value)}
+              placeholder={otherInputPlaceholder}
+              rows={4}
+              autoFocus
+            />
+            <div className="other-service-dialog-actions">
+              <button
+                type="button"
+                className="ctrl-btn"
+                onClick={() => setIsOtherDialogOpen(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                className="ctrl-btn ctrl-btn-primary"
+                disabled={!otherValue.trim()}
+                onClick={() => setIsOtherDialogOpen(false)}
+              >
+                Confirmar opção
+              </button>
+            </div>
+          </motion.div>
         </div>
       )}
 
