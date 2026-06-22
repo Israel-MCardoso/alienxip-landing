@@ -4304,9 +4304,25 @@ body[data-active-sector="005"] .trajectory-progress {
     line-height: 1.08;
   }
 
+  .mission-001-copy {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
   .mission-001-subtitle {
     margin-top: 26px;
-    font-size: 17px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+  }
+
+  .mission-001-subtitle br {
+    display: none;
   }
 
   .mission-001-system {
@@ -4585,9 +4601,9 @@ body[data-active-sector="005"] .trajectory-progress {
     align-self: center;
     width: 100%;
     min-width: 0;
-    max-width: 346px;
+    max-width: 100%;
     padding-top: 4px;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .mission-007-label {
@@ -4604,12 +4620,24 @@ body[data-active-sector="005"] .trajectory-progress {
 
   .mission-007-subtitle {
     margin-top: 24px;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.45;
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
+  .mission-007-subtitle > span,
   .mission-007-subtitle > .mission-007-subtitle-line {
-    font-size: 17px;
+    font-size: 16px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+    display: block;
+    width: 100%;
+    max-width: 100%;
   }
 
   .mission-007-portal {
