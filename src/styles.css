@@ -4024,12 +4024,22 @@ body[data-active-sector="005"] .trajectory-progress {
 
 @media (max-width: 780px) {
   .hero-shell {
-    height: 185vh;
-    min-height: 1120px;
+    height: auto;
+    min-height: 0;
+    background: var(--bg);
   }
 
   .hero-sticky {
-    min-height: 720px;
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+
+  .hero-sequence-mobile-poster {
+    opacity: 0.82 !important;
   }
 
   .navbar {
