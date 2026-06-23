@@ -187,7 +187,7 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
 
   return (
     <div className="hero-sequence" aria-hidden="true">
-      <img className="hero-sequence-frame hero-sequence-poster" src={frames[0]} alt="" draggable="false" />
+      <img className="hero-sequence-frame hero-sequence-poster" src={frames[0]} alt="" draggable="false" fetchPriority="high" />
       {!reduceMotion && !useStaticPoster && (
         <canvas className={`hero-sequence-canvas ${isCanvasReady ? "is-ready" : ""}`} ref={canvasRef} />
       )}

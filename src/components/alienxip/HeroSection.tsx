@@ -41,6 +41,7 @@ function MobileHeroSection() {
             src={lastFrame}
             alt=""
             draggable="false"
+            fetchPriority="high"
           />
           <div className="hero-sequence-vignette" />
           <div className="hero-sequence-grain" />

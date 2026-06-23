@@ -4,11 +4,6 @@ import { HeroSection } from "./components/alienxip/HeroSection";
 import { ClientsMarquee } from "./components/alienxip/ClientsMarquee";
 import { CraterField } from "./components/alienxip/CraterField";
 import { MissionStackContainer } from "./components/alienxip/MissionStackContainer";
-import { MissionMonitoring } from "./components/alienxip/MissionMonitoring";
-import { MissionPortfolio } from "./components/alienxip/MissionPortfolio";
-import { MissionProtocols } from "./components/alienxip/MissionProtocols";
-import { MissionFinal } from "./components/alienxip/MissionFinal";
-import { MissionTestimonials } from "./components/alienxip/MissionTestimonials";
 import { Navbar } from "./components/alienxip/Navbar";
 import { OrbitalSectorIndicator } from "./components/alienxip/OrbitalSectorIndicator";
 import { Starfield } from "./components/alienxip/Starfield";
@@ -16,6 +11,31 @@ import { TrajectoryProgress } from "./components/alienxip/TrajectoryProgress";
 import { Footer } from "./components/alienxip/Footer";
 import { Preloader } from "./components/alienxip/Preloader";
 import { isDiagnosticEntry } from "./config/diagnosticUrl";
+const MissionMonitoring = lazy(() =>
+  import("./components/alienxip/MissionMonitoring").then((module) => ({
+    default: module.MissionMonitoring,
+  })),
+);
+const MissionPortfolio = lazy(() =>
+  import("./components/alienxip/MissionPortfolio").then((module) => ({
+    default: module.MissionPortfolio,
+  })),
+);
+const MissionProtocols = lazy(() =>
+  import("./components/alienxip/MissionProtocols").then((module) => ({
+    default: module.MissionProtocols,
+  })),
+);
+const MissionFinal = lazy(() =>
+  import("./components/alienxip/MissionFinal").then((module) => ({
+    default: module.MissionFinal,
+  })),
+);
+const MissionTestimonials = lazy(() =>
+  import("./components/alienxip/MissionTestimonials").then((module) => ({
+    default: module.MissionTestimonials,
+  })),
+);
 const DiagnosticSystem = lazy(() =>
   import("./components/diagnostic/DiagnosticSystem").then((module) => ({
     default: module.DiagnosticSystem,
@@ -80,11 +100,13 @@ export function App() {
           <CraterField />
           <ClientsMarquee />
           <MissionStackContainer />
-          <MissionMonitoring />
-          <MissionTestimonials />
-          <MissionPortfolio />
-          <MissionProtocols />
-          <MissionFinal />
+          <Suspense fallback={<div style={{ minHeight: "400px" }} />}>
+            <MissionMonitoring />
+            <MissionTestimonials />
+            <MissionPortfolio />
+            <MissionProtocols />
+            <MissionFinal />
+          </Suspense>
           <Footer />
         </div>
         <OrbitalSectorIndicator />

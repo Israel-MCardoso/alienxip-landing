@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import { getDiagnosticUrl } from "../../config/diagnosticUrl";
 
-import logoMark from "../../assets/alienxip-logo-mark-purple.png";
+import logoMark from "../../assets/alienxip-logo-mark-purple.webp";
 
 const navItems = ["Soluções", "Cases", "Diagnóstico", "Sobre", "Contato"];
 

@@ -3,7 +3,7 @@ import type { CSSProperties } from "react";
 import { useState } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
 import { BorderBeam } from "../ui/border-beam";
-import moonImage from "../../assets/mission-001-moon.png";
+import moonImage from "../../assets/mission-001-moon.webp";
 
 type MissionStep = {
   title: string;

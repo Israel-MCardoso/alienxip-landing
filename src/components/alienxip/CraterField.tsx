@@ -1,9 +1,9 @@
 import type { CSSProperties } from "react";
-import crater01 from "../../assets/craters/crater-01.png";
-import crater02 from "../../assets/craters/crater-02.png";
-import crater03 from "../../assets/craters/crater-03.png";
-import crater04 from "../../assets/craters/crater-04.png";
-import crater05 from "../../assets/craters/crater-05.png";
+import crater01 from "../../assets/craters/crater-01.webp";
+import crater02 from "../../assets/craters/crater-02.webp";
+import crater03 from "../../assets/craters/crater-03.webp";
+import crater04 from "../../assets/craters/crater-04.webp";
+import crater05 from "../../assets/craters/crater-05.webp";
 
 const craterImages = [crater01, crater02, crater03, crater04, crater05];
 
@@ -39,6 +39,8 @@ export function CraterField() {
           src={craterImages[imageIndex]}
           alt=""
           key={`${imageIndex}-${index}`}
+          loading="lazy"
+          decoding="async"
           style={
             {
               "--crater-x": `${x}vw`,

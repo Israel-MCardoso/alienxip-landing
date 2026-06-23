@@ -1,7 +1,7 @@
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
-import mission002Background from "../../assets/mission-002-background.png";
+import mission002Background from "../../assets/mission-002-background.webp";
 import { BorderBeam } from "../ui/border-beam";
 
 type ArchitectureStep = {

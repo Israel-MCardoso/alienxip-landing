@@ -9,7 +9,7 @@ import fides7Logo from "../../assets/clients/fides7-clean.webp";
 import institutoTransformandoLogo from "../../assets/clients/instituto-transformando-historia-clean.webp";
 import martronicsLogo from "../../assets/clients/martronics-clean.webp";
 import visionCarLogo from "../../assets/clients/vision-car-clean.webp";
-import sistemaEducacionalInspireLogo from "../../assets/clients/sistema-educacional-inspire-clean.png";
+import sistemaEducacionalInspireLogo from "../../assets/clients/sistema-educacional-inspire-clean.webp";
 
 type TestimonialSlide = {
   title: string;

@@ -7,7 +7,7 @@ import { AnalysisScreen } from "./AnalysisScreen";
 import { FinalReportScreen } from "./FinalReportScreen";
 import { BootScreen } from "./BootScreen";
 import { IdentitySyncCard } from "./IdentitySyncCard";
-import logoMark from "../../assets/alienxip-logo-mark-purple.png";
+import logoMark from "../../assets/alienxip-logo-mark-purple.webp";
 import "./diagnostic.css";
 
 interface DiagnosticSystemProps {
