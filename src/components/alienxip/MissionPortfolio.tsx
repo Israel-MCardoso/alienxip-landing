@@ -7,7 +7,9 @@ import familiaMineiraLogo from "../../assets/clients/familia-mineira-clean.webp"
 import faculdadeCidadeLogo from "../../assets/clients/faculdade-da-cidade-clean.webp";
 import fidesLogo from "../../assets/clients/fides7-clean.webp";
 import martronicsLogo from "../../assets/clients/martronics-clean.webp";
-import missionNotebook from "../../assets/mission-003-notebook.webp";
+import visionCarLogo from "../../assets/clients/vision-car-clean.webp";
+import institutoTransformandoLogo from "../../assets/clients/instituto-transformando-historia-clean.webp";
+import sistemaEducacionalInspireLogo from "../../assets/clients/sistema-educacional-inspire-clean.webp";
 
 type PortfolioProject = GalleryItem & {
   operation: string;
@@ -16,70 +18,91 @@ type PortfolioProject = GalleryItem & {
 
 const portfolioProjects: PortfolioProject[] = [
   {
-    operation: "001",
-    name: "SaaS Restaurante",
-    common: "OPERAÇÃO 001",
-    binomial: "SaaS Restaurante",
+    operation: "115",
+    name: "Sistema Educacional Inspire",
+    common: "OPERAÇÃO 115",
+    binomial: "Sistema Educacional Inspire",
     photo: {
-      url: familiaMineiraLogo,
-      text: "Identidade do projeto SaaS Restaurante",
-      by: "Produto operacional",
-    },
-  },
-  {
-    operation: "018",
-    name: "Sistema Empresarial",
-    common: "OPERAÇÃO 018",
-    binomial: "Sistema Empresarial",
-    photo: {
-      url: martronicsLogo,
-      text: "Identidade do projeto Sistema Empresarial",
-      by: "Infraestrutura conectada",
-    },
-  },
-  {
-    operation: "024",
-    name: "Landing Premium",
-    common: "OPERAÇÃO 024",
-    binomial: "Landing Premium",
-    photo: {
-      url: missionNotebook,
-      text: "Interface do projeto Landing Premium",
-      pos: "center",
-      by: "Conversão estratégica",
-    },
-  },
-  {
-    operation: "031",
-    name: "IA Automação",
-    common: "OPERAÇÃO 031",
-    binomial: "IA Automação",
-    photo: {
-      url: fidesLogo,
-      text: "Identidade do projeto IA Automação",
-      by: "Fluxos inteligentes",
-    },
-  },
-  {
-    operation: "054",
-    name: "App Fitness",
-    common: "OPERAÇÃO 054",
-    binomial: "App Fitness",
-    photo: {
-      url: clubeBoaVontadeLogo,
-      text: "Identidade do projeto App Fitness",
-      by: "Aplicação mobile",
+      url: sistemaEducacionalInspireLogo,
+      text: "Identidade do projeto Sistema Educacional Inspire",
+      by: "Zoho CRM & Automação",
     },
   },
   {
     operation: "077",
-    name: "Portal Educacional",
+    name: "Faculdade da Cidade",
     common: "OPERAÇÃO 077",
-    binomial: "Portal Educacional",
+    binomial: "Faculdade da Cidade",
     photo: {
       url: faculdadeCidadeLogo,
-      text: "Identidade do projeto Portal Educacional",
-      by: "Sistema acadêmico",
+      text: "Identidade do projeto Faculdade da Cidade",
+      by: "HubSpot CRM & Automação",
+    },
+  },
+  {
+    operation: "054",
+    name: "Clube Atlético Boa Vontade",
+    common: "OPERAÇÃO 054",
+    binomial: "Clube Atlético Boa Vontade",
+    photo: {
+      url: clubeBoaVontadeLogo,
+      text: "Identidade do projeto Clube Atlético Boa Vontade",
+      by: "App Mobile & CRM",
+    },
+  },
+  {
+    operation: "099",
+    name: "VisionCar",
+    common: "OPERAÇÃO 099",
+    binomial: "VisionCar",
+    photo: {
+      url: visionCarLogo,
+      text: "Identidade do projeto VisionCar",
+      by: "ERP & Gestão de Clientes",
+    },
+  },
+  {
+    operation: "033",
+    name: "Instituto Transformando História",
+    common: "OPERAÇÃO 033",
+    binomial: "Instituto Transformando História",
+    photo: {
+      url: institutoTransformandoLogo,
+      text: "Identidade do projeto Instituto Transformando História",
+      by: "Plataforma Social & CRM",
+    },
+  },
+  {
+    operation: "088",
+    name: "FIDSET Engenharia",
+    common: "OPERAÇÃO 088",
+    binomial: "FIDSET Engenharia",
+    photo: {
+      url: fidesLogo,
+      text: "Identidade do projeto FIDSET Engenharia",
+      by: "Landing Page & Branding",
+    },
+  },
+  {
+    operation: "021",
+    name: "Família Mineira",
+    common: "OPERAÇÃO 021",
+    binomial: "Família Mineira",
+    photo: {
+      url: familiaMineiraLogo,
+      text: "Identidade do projeto Família Mineira",
+      by: "Omnichannel & CRM Hub",
+    },
+  },
+  {
+    operation: "108",
+    name: "Martronics",
+    common: "OPERAÇÃO 108",
+    binomial: "Martronics",
+    photo: {
+      url: martronicsLogo,
+      text: "Identidade do projeto Martronics",
+      by: "ERP Customizado & Indústria 4.0",
     },
   },
 ];
@@ -197,10 +220,10 @@ export function MissionPortfolio() {
 
       <aside className="mission-portfolio-selector" aria-label="Arquivo de operações">
         <p>
-          ARQUIVO DE OPERAÇÕES <span>// 12 REGISTROS</span>
+          ARQUIVO DE OPERAÇÕES <span>// {portfolioProjects.length} REGISTROS</span>
         </p>
         <div className="mission-portfolio-project-list">
-          {portfolioProjects.slice(0, 5).map((project, index) => (
+          {portfolioProjects.map((project, index) => (
             <PortfolioProjectButton
               key={project.operation}
               project={project}

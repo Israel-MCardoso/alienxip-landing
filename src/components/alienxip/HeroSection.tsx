@@ -1,8 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ScrambleText } from "../ui/ScrambleText";
-import liquidGlassLogo from "../../assets/alienxip-liquid-glass-logo.webp";
-import lastFrame from "../../assets/hero-sequence-webp/hero-frame-120.webp";
 import { HeroImageSequence } from "./HeroImageSequence";
 import { ScrollCue } from "./ScrollCue";
 import { getDiagnosticUrl } from "../../config/diagnosticUrl";
@@ -38,15 +36,21 @@ function MobileHeroSection() {
         <div className="hero-sequence hero-sequence-mobile" aria-hidden="true">
           <img
             className="hero-sequence-frame hero-sequence-poster hero-sequence-mobile-poster"
-            src={lastFrame}
+            src="/assets/hero/frames/frame-001.webp"
             alt=""
             draggable="false"
             fetchPriority="high"
           />
           <div className="hero-sequence-vignette" />
           <div className="hero-sequence-grain" />
+          <img
+            className="hero-nebula-overlay"
+            src="/assets/hero/alienxip-nebula-overlay.png"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+          />
         </div>
-        <img className="hero-watermark-cover" src={liquidGlassLogo} alt="" aria-hidden="true" draggable="false" />
 
         <motion.div className="hero-content hero-content-mobile" style={{ opacity: 1 }}>
           <motion.p
@@ -133,7 +137,6 @@ function DesktopHeroSection() {
     <section className="hero-shell" id="top" ref={heroRef}>
       <div className="hero-sticky">
         <HeroImageSequence progress={scrollYProgress} />
-        <img className="hero-watermark-cover" src={liquidGlassLogo} alt="" aria-hidden="true" draggable="false" />
 
         <motion.div className="hero-content" style={{ opacity: 1, y: copyY }}>
           <motion.p

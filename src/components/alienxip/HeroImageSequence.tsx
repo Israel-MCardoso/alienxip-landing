@@ -1,15 +1,11 @@
-import { MotionValue, useMotionValueEvent, useReducedMotion } from "framer-motion";
+import { motion, MotionValue, useMotionValueEvent, useReducedMotion, useTransform } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
-const frameModules = import.meta.glob("../../assets/hero-sequence-webp/*.webp", {
-  eager: true,
-  import: "default",
-  query: "?url",
-}) as Record<string, string>;
-
-const frames = Object.entries(frameModules)
-  .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
-  .map(([, src]) => src);
+const FRAME_COUNT = 80;
+const frames = Array.from(
+  { length: FRAME_COUNT },
+  (_, i) => `/assets/hero/frames/frame-${String(i + 1).padStart(3, "0")}.webp`
+);
 
 type HeroImageSequenceProps = {
   progress: MotionValue<number>;
@@ -45,6 +41,9 @@ function drawCoverImage(canvas: HTMLCanvasElement, image: HTMLImageElement) {
 
 export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
   const reduceMotion = useReducedMotion();
+  const nebulaX = useTransform(progress, [0, 1], [0, -18]);
+  const nebulaY = useTransform(progress, [0, 1], [0, 22]);
+  const nebulaScale = useTransform(progress, [0, 1], [1, 1.025]);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const imagesRef = useRef<Array<HTMLImageElement | undefined>>([]);
   const loadedRef = useRef<boolean[]>([]);
@@ -60,29 +59,19 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     const mediaQuery = window.matchMedia("(max-width: 768px)");
-    const handleChange = () => {
-      setUseStaticPoster(mediaQuery.matches);
-    };
-
+    const handleChange = () => setUseStaticPoster(mediaQuery.matches);
     handleChange();
     mediaQuery.addEventListener("change", handleChange);
-
-    return () => {
-      mediaQuery.removeEventListener("change", handleChange);
-    };
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   const resizeCanvas = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const rect = canvas.getBoundingClientRect();
-    const dpr = 1;
-    const nextWidth = Math.max(1, Math.round(rect.width * dpr));
-    const nextHeight = Math.max(1, Math.round(rect.height * dpr));
-
+    const nextWidth = Math.max(1, Math.round(rect.width));
+    const nextHeight = Math.max(1, Math.round(rect.height));
     if (canvas.width !== nextWidth || canvas.height !== nextHeight) {
       canvas.width = nextWidth;
       canvas.height = nextHeight;
@@ -92,7 +81,6 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
 
   const drawFrame = (requestedIndex = targetIndexRef.current) => {
     if (reduceMotion) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -103,7 +91,6 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
 
     const clampedIndex = Math.min(frames.length - 1, Math.max(0, requestedIndex));
     let drawableIndex = clampedIndex;
-
     while (drawableIndex > 0 && !loadedRef.current[drawableIndex]) {
       drawableIndex -= 1;
     }
@@ -133,11 +120,9 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
 
     const loadBatch = (startIndex: number) => {
       if (cancelled) return;
-
       frames.slice(startIndex, startIndex + 10).forEach((src, offset) => {
         const index = startIndex + offset;
         if (imagesRef.current[index]) return;
-
         const image = new Image();
         image.decoding = "async";
         image.onload = () => {
@@ -149,7 +134,6 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
         image.src = src;
         imagesRef.current[index] = image;
       });
-
       if (startIndex + 10 < frames.length) {
         window.setTimeout(() => loadBatch(startIndex + 10), 55);
       }
@@ -161,6 +145,7 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
       cancelled = true;
       window.removeEventListener("resize", handleResize);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduceMotion, useStaticPoster]);
 
   useEffect(() => {
@@ -187,12 +172,29 @@ export function HeroImageSequence({ progress }: HeroImageSequenceProps) {
 
   return (
     <div className="hero-sequence" aria-hidden="true">
-      <img className="hero-sequence-frame hero-sequence-poster" src={frames[0]} alt="" draggable="false" fetchPriority="high" />
+      <img
+        className="hero-sequence-frame hero-sequence-poster"
+        src={frames[0]}
+        alt=""
+        draggable="false"
+        fetchPriority="high"
+      />
       {!reduceMotion && !useStaticPoster && (
-        <canvas className={`hero-sequence-canvas ${isCanvasReady ? "is-ready" : ""}`} ref={canvasRef} />
+        <canvas
+          className={`hero-sequence-canvas${isCanvasReady ? " is-ready" : ""}`}
+          ref={canvasRef}
+        />
       )}
       <div className="hero-sequence-vignette" />
       <div className="hero-sequence-grain" />
+      <motion.img
+        className="hero-nebula-overlay"
+        src="/assets/hero/alienxip-nebula-overlay.png"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+        style={{ x: nebulaX, y: nebulaY, scale: nebulaScale }}
+      />
     </div>
   );
 }

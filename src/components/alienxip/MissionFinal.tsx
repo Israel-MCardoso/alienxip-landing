@@ -7,7 +7,7 @@ import { getDiagnosticUrl } from "../../config/diagnosticUrl";
 
 const finalSignals = [
   "diagnóstico gratuito",
-  "resposta em até 24h",
+  "análise estratégica personalizada",
   "operação confidencial",
 ];
 
